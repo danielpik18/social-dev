@@ -1,0 +1,18 @@
+{
+  "files": {
+    "main.css": "/repository-name/static/css/main.55502467.chunk.css",
+    "main.js": "/repository-name/static/js/main.ab5a5d43.chunk.js",
+    "main.js.map": "/repository-name/static/js/main.ab5a5d43.chunk.js.map",
+    "runtime~main.js": "/repository-name/static/js/runtime~main.f7634681.js",
+    "runtime~main.js.map": "/repository-name/static/js/runtime~main.f7634681.js.map",
+    "static/js/2.06bb692e.chunk.js": "/repository-name/static/js/2.06bb692e.chunk.js",
+    "static/js/2.06bb692e.chunk.js.map": "/repository-name/static/js/2.06bb692e.chunk.js.map",
+    "index.html": "/repository-name/index.html",
+    "precache-manifest.521bb10b083936f487ba56f6358611c3.js": "/repository-name/precache-manifest.521bb10b083936f487ba56f6358611c3.js",
+    "service-worker.js": "/repository-name/service-worker.js",
+    "static/css/main.55502467.chunk.css.map": "/repository-name/static/css/main.55502467.chunk.css.map",
+    "static/media/Register.module.scss": "/repository-name/static/media/coding.4d0c761f.jpg",
+    "static/media/Navigation.module.scss": "/repository-name/static/media/logo_transparent.07c02484.png",
+    "static/media/Profile.module.scss": "/repository-name/static/media/userImage.471a1ad3.png"
+  }
+}
