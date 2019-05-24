@@ -1,9 +1,17 @@
-.menuItem{
+@import './../../../scss/colors';
+
+.drawerMenu{
+    background: linear-gradient($greyDark, $blackLight);
+    height: 100%;
+
     &Icon{
         font-size: 1.6rem;
+        color: $yellowDark !important;
     }
-
+    
     &Text{
-        font-size: .85rem !important;
+        color: $white;
+        text-decoration: none !important;
     }
 }
+

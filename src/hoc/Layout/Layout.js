@@ -1,7 +1,7 @@
 import React from 'react';
 import Navigation from '../../Components/Navigation/Navigation';
 
-const Layout = ({children}) => {
+const Layout = ({ children }) => {
     return (
         <div>
             <Navigation />
@@ -9,5 +9,5 @@ const Layout = ({children}) => {
         </div>
     );
 }
- 
+
 export default Layout;

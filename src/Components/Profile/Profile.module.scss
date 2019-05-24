@@ -1,0 +1,35 @@
+@import './../../scss/colors';
+
+.profileWrapper{
+    display: flex;
+    flex-direction: column;
+}
+
+.user{
+    &Info{
+        display: flex;
+        background-color: $white;
+        padding: 1.4rem;
+        border-radius: 4px;
+
+        &Title{
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+    }
+
+    &Name{
+        color: $greyDark;
+        margin-left: 1rem !important;
+    }
+    
+    &Image{
+        background-image: url('./../../images/userImage.png');
+        width: 10rem;
+        height: 10rem;
+        background-size: cover;
+        margin-left: 4rem;
+    }
+}

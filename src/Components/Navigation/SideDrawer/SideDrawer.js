@@ -8,7 +8,14 @@ import {
     ListItemIcon
 } from '@material-ui/core';
 
-import { IoIosPerson, IoIosSearch } from 'react-icons/io';
+import {
+    IoIosPerson,
+    IoIosSearch,
+    IoIosLogIn
+} from 'react-icons/io';
+
+import { Link } from 'react-router-dom';
+
 import styles from './SideDrawer.module.scss';
 
 const SideDrawer = ({ isOpen, toggle }) => {
@@ -16,11 +23,17 @@ const SideDrawer = ({ isOpen, toggle }) => {
         {
             title: 'Mi perfil',
             icon: <IoIosPerson />
+        }
+        /*
+        {
+            title: 'Ingresar',
+            icon: <IoIosLogIn />
         },
         {
             title: 'Buscar desarroladores',
             icon: <IoIosSearch />
         },
+        */
     ];
 
     return (
@@ -28,18 +41,23 @@ const SideDrawer = ({ isOpen, toggle }) => {
             open={isOpen}
             onClose={toggle}
         >
-            <List>
+            <List className={styles.drawerMenu}>
                 {
                     menuOptions.map(option => (
-                        <ListItem button key={option.title}>
-                            <ListItemIcon className={styles.menuItemIcon}>
-                                {option.icon}
-                            </ListItemIcon>
-                            <ListItemText
-                                className={styles.menuItemIcon}
-                                primary={option.title}
-                            />
-                        </ListItem>
+                        <Link
+                            to='/register' 
+                            key={option.title}
+                            style={{
+                                textDecoration: 'none'
+                            }}
+                        >
+                            <ListItem button>
+                                <ListItemIcon className={styles.drawerMenuIcon}>
+                                    {option.icon}
+                                </ListItemIcon>
+                                <span className={styles.drawerMenuText}>{option.title}</span>
+                            </ListItem>
+                        </Link>
                     ))
                 }
             </List>
