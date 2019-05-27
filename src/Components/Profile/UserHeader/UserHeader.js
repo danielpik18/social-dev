@@ -21,13 +21,18 @@ const UserHeader = ({ user, ratingsEnabled, ratingRatio, addRating }) => {
             </div>
             <div className={styles.userRating}>
                 <div>
-                    <Typography variant='caption'>
-                        {`Puntaje promedio: ${ratingRatio}`}
-                    </Typography>
+                    {
+                        ratingRatio &&
+                        <>
+                            <Typography variant='caption'>
+                                {`Puntaje promedio: ${ratingRatio}`}
+                            </Typography>
 
-                    <Typography variant='caption'>
-                        {`(Calificado ${Object.values(user.ratings).length} veces)`}
-                    </Typography>
+                            <Typography variant='caption'>
+                                {`(Calificado ${Object.values(user.ratings).length} veces)`}
+                            </Typography>
+                        </>
+                    }
                 </div>
 
                 <StarRatings
