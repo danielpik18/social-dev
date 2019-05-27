@@ -1,39 +1,59 @@
 import React from 'react';
-
 import {
     Drawer,
     List,
     ListItem,
-    ListItemText,
-    ListItemIcon
+    ListItemIcon,
 } from '@material-ui/core';
 
 import {
     IoIosPerson,
-    IoIosSearch,
-    IoIosLogIn
+    IoIosLogIn,
+    IoIosLogOut
 } from 'react-icons/io';
 
 import { Link } from 'react-router-dom';
 
+import { fire } from './../../../firebase';
+
 import styles from './SideDrawer.module.scss';
 
-const SideDrawer = ({ isOpen, toggle }) => {
+const SideDrawer = ({ isOpen, toggle, userAuth }) => {
     const menuOptions = [
-        {
-            title: 'Mi perfil',
-            icon: <IoIosPerson />
-        }
-        /*
-        {
-            title: 'Ingresar',
-            icon: <IoIosLogIn />
-        },
-        {
-            title: 'Buscar desarroladores',
-            icon: <IoIosSearch />
-        },
-        */
+        ...(
+            userAuth ?
+                [
+                    {
+                        title: 'Mi perfil',
+                        icon: <IoIosPerson />,
+                        path: `/profile`,
+                    }
+                ] : []
+        ),
+        ...(
+            !userAuth ?
+                [
+                    {
+                        title: 'Ingresar',
+                        icon: <IoIosLogIn />,
+                        path: '/login'
+                    }
+                ] : []
+        ),
+        ...(
+            userAuth ?
+                [
+                    {
+                        title: 'Log out',
+                        icon: <IoIosLogOut />,
+                        path: '/login',
+                        clicked: () => {
+                            fire.auth().signOut();
+                            toggle();
+                        }
+                    }
+                ] : []
+        )
     ];
 
     return (
@@ -44,14 +64,19 @@ const SideDrawer = ({ isOpen, toggle }) => {
             <List className={styles.drawerMenu}>
                 {
                     menuOptions.map(option => (
+                        option &&
                         <Link
-                            to='/register' 
+                            to={option.path}
                             key={option.title}
                             style={{
-                                textDecoration: 'none'
+                                textDecoration: 'none',
+                                width: '100%',
+                                textAlign: 'center'
                             }}
+                            onClick={option.clicked ? option.clicked : toggle}
+
                         >
-                            <ListItem button>
+                            <ListItem button >
                                 <ListItemIcon className={styles.drawerMenuIcon}>
                                     {option.icon}
                                 </ListItemIcon>

@@ -1,0 +1,37 @@
+@import './../../scss/colors';
+
+.loginWrapper{
+    background-color: $white;
+    padding: 1.2rem;
+    margin-top: 6rem;
+}
+
+.inputBlock{
+    display: flex;
+    align-items: center;
+    margin-bottom: 2rem;
+
+    &Icon{
+        color: $greyDark;
+        opacity: .75;
+        font-size: 1.2rem;
+        margin-right: 2rem;
+        text-align: center;
+    }
+}
+
+.loginTitle{
+    display: flex;
+    align-items: center;
+    
+
+    &Icon{
+        font-size: 2rem;
+        margin-right: 1.2rem;
+    }
+}
+
+.loginButton{
+    background-color: $blueLight !important;
+    color: $whiteDark !important;
+}

@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import {
     AppBar,
     Toolbar,
-    IconButton,
+    IconButton
 } from '@material-ui/core';
 import styles from './Navigation.module.scss';
 
@@ -10,6 +10,10 @@ import { IoIosMenu } from 'react-icons/io';
 import SideDrawer from './SideDrawer/SideDrawer';
 
 import { Link } from 'react-router-dom';
+import SearchBar from './SearchBar/SearchBar';
+
+import { AuthContext } from './../../Contexts/AuthContext';
+
 
 class Navigation extends Component {
     state = {
@@ -29,13 +33,25 @@ class Navigation extends Component {
                             <div className={styles.logo}></div>
                         </Link>
 
+                        <SearchBar />
+
                         <IconButton onClick={this.toggleDrawer}>
                             <IoIosMenu className={styles.menuIcon} />
                         </IconButton>
                     </Toolbar>
                 </AppBar>
 
-                <SideDrawer isOpen={this.state.isDrawerOpen} toggle={this.toggleDrawer} />
+                <AuthContext.Consumer>
+                    {context => {
+                        return (
+                            <SideDrawer
+                                isOpen={this.state.isDrawerOpen}
+                                toggle={this.toggleDrawer}
+                                userAuth={context.currentUser !== null}
+                            />
+                        );
+                    }}
+                </AuthContext.Consumer>
             </>
         );
     }

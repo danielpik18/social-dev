@@ -1,0 +1,17 @@
+.resultWrapper{
+    display: flex;
+}
+
+.user{
+    &Image{
+        background-image: url('./../../../images/userImage.png');
+        background-size: cover;
+        width: 6rem;
+        height: 6rem;
+        margin-right: 2rem;
+    }
+
+    &Name{
+        font-size: 2rem;
+    }
+}

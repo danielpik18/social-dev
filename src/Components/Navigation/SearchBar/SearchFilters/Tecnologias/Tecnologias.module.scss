@@ -1,0 +1,19 @@
+@import './../../../../../scss/colors';
+
+.techWrapper{
+    background: linear-gradient(to right, $white, $whiteDark);
+    text-align: center;
+}
+
+.techList{
+    margin: 1rem 0;
+    display: flex;
+    flex-direction: column;
+}
+
+.techItem{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin: 0 1.6rem;
+}

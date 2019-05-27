@@ -1,0 +1,13 @@
+@import './../../../../scss/colors';
+
+.filtersWrapper{
+    padding: 1.4rem;
+    width: 30rem;
+    background-color: $whiteLight;
+}
+
+.filtersBar{
+    background-color: $greyLight !important;
+    margin-top: 1.2rem;
+    color: $greyDark !important;
+}

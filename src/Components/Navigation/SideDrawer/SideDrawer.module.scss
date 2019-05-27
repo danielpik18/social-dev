@@ -3,6 +3,10 @@
 .drawerMenu{
     background: linear-gradient($greyDark, $blackLight);
     height: 100%;
+    width: 20rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 
     &Icon{
         font-size: 1.6rem;

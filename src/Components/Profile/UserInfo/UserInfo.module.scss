@@ -1,0 +1,29 @@
+@import './../../../scss/colors';
+
+.info{
+    &Wrapper{
+        background-color: $whiteLight;
+        padding: 1.2rem;
+    }
+
+    &FieldsWrapper{
+        display: flex;
+        justify-content: space-between;
+    }
+
+    &Field{
+        display: flex;
+        flex-direction: column;
+    }
+
+    &Title{
+        display: flex;
+        align-items: center;
+        color: $blue;
+
+        &Icon{
+            font-size: 2rem;
+            margin-right: .4rem;
+        }
+    }
+}

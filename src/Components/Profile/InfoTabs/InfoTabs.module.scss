@@ -1,0 +1,12 @@
+@import './../../../scss/colors';
+
+.tab{
+    &Icon{
+        font-size: 1.6rem;
+        color: $whiteLight;
+    }
+}
+
+.tabsBar{
+    background-color: $blueLight !important;
+}
