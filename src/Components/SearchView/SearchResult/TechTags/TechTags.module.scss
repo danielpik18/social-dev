@@ -1,0 +1,16 @@
+@import './../../../../scss/colors';
+
+.tag{
+    background-color: rgba($grey, 25);
+    max-width: fit-content;
+    margin-right: .75rem;
+    font-size: .75rem;
+    padding: 0 .4rem;
+    border-radius: 6px 0 0 0;
+    color: $whiteDark;
+}
+
+.tags{
+    margin-top: 1rem;
+    display: flex;
+}

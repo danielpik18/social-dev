@@ -5,14 +5,20 @@
     padding: 1.2rem;
 }
 
-.expWrapper{
-    display: flex;
-    margin-bottom: 2rem;
-}
+.exp{
+    &Wrapper{
+        display: flex;
+        margin-bottom: 2rem;
+    }
 
-.expImage{
-    background-size: cover;
-    width: 5rem;
-    height: 5rem;
-    margin-right: 1rem;
+    &Image{
+        background-size: cover;
+        width: 5rem;
+        height: 5rem;
+        margin-right: 1rem;
+    }
+
+    &Location{
+        color: $grey;
+    }
 }

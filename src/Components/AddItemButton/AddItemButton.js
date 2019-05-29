@@ -3,9 +3,13 @@ import { IoIosAddCircle } from 'react-icons/io';
 import styles from './AddItemButton.module.scss';
 import { Button } from '@material-ui/core';
 
-const AddItemButton = ({ text }) => {
+const AddItemButton = ({ clicked, text }) => {
     return (
-        <Button className={styles.button}>
+        <Button
+            onClick={clicked}
+            className={styles.button}
+            fullWidth
+        >
             <IoIosAddCircle className={styles.addIcon} />
             <div>
                 {text}

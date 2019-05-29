@@ -1,6 +1,7 @@
 @import './../../scss/colors';
 
 .button{
+    background: linear-gradient(to right, $greyLight, $whiteDark) !important;
 }
 
 .addIcon{

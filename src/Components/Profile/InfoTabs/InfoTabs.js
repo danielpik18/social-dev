@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { useState, useContext } from 'react';
 import {
     AppBar,
     Tabs,
@@ -8,50 +8,70 @@ import {
 import * as Ionicons from 'react-icons/io';
 
 import styles from './InfoTabs.module.scss';
+import cssColors from './../../../scss/_colors.scss';
 
 import Experiencia from './Experiencia/Experiencia';
 import Estudios from './Estudios/Estudios';
 import Tecnologias from './Tecnologias/Tecnologias';
+import { ProfileContext } from '../ProfileContext';
 
-class InfoTabs extends Component {
-    state = {
-        tabValue: 0
+const InfoTabs = () => {
+    const [tabValue, setTabValue] = useState(0);
+
+    const { user } = useContext(ProfileContext);
+
+    const changeTab = (value) => setTabValue(value);
+
+    const renderDevTab = () => {
+        switch (tabValue) {
+            case 0:
+                return <Experiencia />
+            case 1:
+                return <Estudios />
+            case 2: return <Tecnologias />
+        }
+    };
+
+    const renderRecruiterTab = () => {
+        //console.log('');
     }
 
-    changeTab = (value) => this.setState({ tabValue: value });
+    const menuTabs = [
+        {
+            display: user.role === 'Desarrollador',
+            title: 'Experiencia laboral',
+            icon: 'IoIosMedal',
+        },
+        {
+            display: user.role === 'Desarrollador',
+            title: 'Estudios y títulos',
+            icon: 'IoIosSchool',
+        },
+        {
+            display: user.role === 'Desarrollador',
+            title: 'Lenguajes y tecnologías',
+            icon: 'IoIosConstruct'
+        }
+    ];
 
-    render() {
-        const value = this.state.tabValue;
-
-        const menuTabs = [
-            {
-                title: 'Experiencia laboral',
-                icon: 'IoIosMedal',
-            },
-            {
-                title: 'Estudios y títulos',
-                icon: 'IoIosSchool',
-            },
-            {
-                title: 'Lenguajes y tecnologías',
-                icon: 'IoIosConstruct'
-            }
-        ];
-
-        return (
-            <div>
-                <AppBar
-                    position="static"
-                    className={styles.tabsBar}
+    return (
+        <div className={styles.tabsWrapper}>
+            <AppBar
+                position="static"
+                style={{
+                    backgroundColor: user.role === 'Desarrollador'
+                        ? cssColors.blue : cssColors.grey
+                }}
+            >
+                <Tabs
+                    value={tabValue}
+                    onChange={(e, index) => changeTab(index)}
+                    variant="scrollable"
+                    scrollButtons="off"
                 >
-                    <Tabs
-                        value={this.state.tabValue}
-                        onChange={(e, index) => this.changeTab(index)}
-                        variant="scrollable"
-                        scrollButtons="off"
-                    >
-                        {
-                            menuTabs.map(tab => {
+                    {
+                        menuTabs.map(tab => {
+                            if (tab.display) {
                                 const Icon = Ionicons[tab.icon];
 
                                 return (
@@ -65,16 +85,19 @@ class InfoTabs extends Component {
                                         </Tab>
                                     </Tooltip>
                                 );
-                            })
-                        }
-                    </Tabs>
-                </AppBar>
-                {value === 0 && <Experiencia />}
-                {value === 1 && <Estudios />}
-                {value === 2 && <Tecnologias />}
-            </div>
-        );
-    }
+                            }
+                        })
+                    }
+                </Tabs>
+            </AppBar>
+
+            {
+                user.role === 'Desarrollador' ?
+                    renderDevTab() : renderRecruiterTab()
+            }
+        </div>
+    );
 }
+
 
 export default InfoTabs;

@@ -1,5 +1,17 @@
+@import './../../../scss/colors';
+
 .resultWrapper{
     display: flex;
+    justify-content: space-between;
+    margin-bottom: 1rem;
+    background-color: $whiteDark;
+    border-left: $grey 1px solid;
+    padding: 1rem;
+    cursor: pointer;
+
+    &:hover{
+        background-color: rgba($white, .45);
+    }
 }
 
 .user{
@@ -12,6 +24,29 @@
     }
 
     &Name{
-        font-size: 2rem;
+        color: $greyDark !important;
+    }
+}
+
+.rightSide{
+    flex-direction: column;
+    line-height: 1.4rem;
+    margin-right: 2rem;
+
+    &Info{
+        display: flex;
+        flex-direction: column;
+        &:not(:last-child){
+            margin-bottom: 1.4rem;
+        }
+    }
+
+    &Subtitle{
+        color: $grey;
+    }
+
+    &Value{
+        font-size: 1.4rem;
+        color: $greyDark;
     }
 }

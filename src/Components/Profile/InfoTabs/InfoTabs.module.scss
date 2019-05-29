@@ -1,12 +1,12 @@
 @import './../../../scss/colors';
 
+.tabsWrapper{
+    margin-bottom: 10rem;
+}
+
 .tab{
     &Icon{
         font-size: 1.6rem;
         color: $whiteLight;
     }
-}
-
-.tabsBar{
-    background-color: $blueLight !important;
 }

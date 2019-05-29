@@ -4,6 +4,8 @@
     &Header{
         display: flex;
         background-color: $white;
+        //background-image: url('./../../../images/blurred-background-1.jpg');
+        background-size: cover;
         padding: 3rem 0;
         border-radius: 4px;
         position: relative;
@@ -13,6 +15,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
+            margin-right: 10rem;
         }
     }
 
@@ -27,13 +30,5 @@
         height: 10rem;
         background-size: cover;
         margin-left: 4rem;
-    }
-
-    &Rating{
-        position: absolute;
-        bottom: .4rem;
-        right: .8rem;
-
-        display: flex;
     }
 }

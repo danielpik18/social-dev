@@ -1,0 +1,15 @@
+@import './../../scss/colors';
+
+.errorWrapper{
+    border: 1px solid $redLight;
+    padding: 2rem;
+    text-align: center;
+}
+
+.errorTitle{
+    color: $redDark;
+}
+
+.errorMessage{
+    color: $greyDark;
+}

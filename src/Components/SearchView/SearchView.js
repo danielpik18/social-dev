@@ -1,60 +1,61 @@
-import React, { Component } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import styles from './SearchView.module.scss';
 import { Typography, Container, Divider } from '@material-ui/core';
 
 import { reBase } from './../../firebase';
 import SearchResult from './SearchResult/SearchResult';
+import { AuthContext } from './../../Contexts/AuthContext';
 
-class SearchView extends Component {
-    state = {
-        searchResults: []
-    }
+const SearchView = () => {
+    const [searchResults, setSearchResults] = useState([]);
+    const { currentUser } = useContext(AuthContext);
 
-    componentWillMount() {
-        reBase.fetch('users', {
-            context: this
-        }).then(data => {
-            let users = [];
+    useEffect(() => {
+        reBase.fetch('users', {})
+            .then(users => {
+                let usersWithID = [];
 
-            const usersIDs = Object.keys(data);
+                const usersIDs = Object.keys(users);
 
-            usersIDs.forEach((key, i) => {
-                users.push({
-                    id: usersIDs[i],
-                    ...data[key]
+                usersIDs.forEach((key, i) => {
+                    usersWithID.push({
+                        id: usersIDs[i],
+                        ...users[key]
+                    });
                 });
+
+                setSearchResults(usersWithID);
             });
+    })
 
-            this.setState({ searchResults: users })
-        });
-    }
+    return (
+        <Container maxWidth='md' className={styles.searchWrapper}>
+            <Typography variant='h5'>
+                Resultados de la búsqueda:
+            </Typography>
 
-    render() {
-        console.log(this.props.match.params.id)
+            <div className={styles.searchResults}>
+                {
+                    searchResults.map(user => {
+                        const resultJSX = (
+                            <SearchResult
+                                user={user}
+                                key={user.id}
+                            />
+                        );
 
-        return (
-            <Container maxWidth='md' className={styles.searchWrapper}>
-                <Typography variant='h4'>
-                    Resultados:
-                </Typography>
-
-                <Divider style={{ margin: '1rem 0' }} />
-
-                <div className={styles.searchResults}>
-                    {
-                        this.state.searchResults.map((result, index) => {
-                            return (
-                                <SearchResult
-                                    user={result}
-                                    key={index}
-                                />
-                            )
-                        })
-                    }
-                </div>
-            </Container>
-        );
-    }
+                        if (currentUser) {
+                            if (user.id !== currentUser.uid) {
+                                return resultJSX;
+                            }
+                        } else {
+                            return resultJSX;
+                        }
+                    })
+                }
+            </div>
+        </Container>
+    );
 }
 
 export default SearchView;

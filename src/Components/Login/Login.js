@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { useState, useContext } from 'react';
 import styles from './Login.module.scss';
 import { IoMdMail, IoIosLock, IoIosLogIn } from 'react-icons/io';
 import {
@@ -18,96 +18,89 @@ import { AuthContext } from './../../Contexts/AuthContext';
 import { Redirect } from 'react-router-dom';
 import ErrorDialog from '../ErrorDialog/ErrorDialog';
 
-class Login extends Component {
-    state = {
-        email: '',
-        password: '',
-        errorDialogOpen: false,
-        errorDialogMessage: ''
-    }
+const Login = () => {
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    const [errorDialog, setErrorDialog] = useState({
+        open: false,
+        message: ''
+    });
 
-    handleChange = (event) => {
-        this.setState({ [event.target.name]: event.target.value });
-    }
+    const { currentUser } = useContext(AuthContext);
 
-    handleLogin = () => {
+    const handleLogin = () => {
         fire.auth()
             .signInWithEmailAndPassword(
-                this.state.email, this.state.password)
+                email, password)
             .catch(error => {
-                this.setState({
-                    errorDialogOpen: true,
-                    errorDialogMessage: error.message
+                setErrorDialog({
+                    open: true,
+                    message: error.message
                 });
             });
     }
 
-    render() {
-        return (
-            <AuthContext.Consumer>
-                {context => (
-                    context.currentUser ?
-                        <Redirect to='/'></Redirect>
-                        : (
-                            <Container maxWidth='sm' className={styles.loginWrapper}>
-                                <div className={styles.loginTitle}>
-                                    <IoIosLogIn className={styles.loginTitleIcon} />
+    return (
+        currentUser ?
+            <Redirect to='/'></Redirect>
+            : (
+                <Container maxWidth='sm' className={styles.loginWrapper}>
+                    <div className={styles.loginTitle}>
+                        <IoIosLogIn className={styles.loginTitleIcon} />
 
-                                    <Typography variant='h6'>
-                                        Ingresa tus credenciales
-                            </Typography>
-                                </div>
+                        <Typography variant='h6'>
+                            Ingresa tus credenciales
+                        </Typography>
+                    </div>
 
-                                <Divider style={{ margin: '1rem 0' }} />
+                    <Divider style={{ margin: '1rem 0' }} />
 
-                                <div className={styles.inputBlock}>
-                                    <IoMdMail className={styles.inputBlockIcon} />
+                    <div className={styles.inputBlock}>
+                        <IoMdMail className={styles.inputBlockIcon} />
 
-                                    <TextField
-                                        fullWidth
-                                        label='Ingresa tu correo electrónico'
-                                        onChange={event => this.handleChange(event)}
-                                        name='email'
-                                    />
-                                </div>
+                        <TextField
+                            fullWidth
+                            label='Ingresa tu correo electrónico'
+                            onChange={event => setEmail(event.target.value)}
+                            name='email'
+                        />
+                    </div>
 
-                                <div className={styles.inputBlock}>
-                                    <IoIosLock className={styles.inputBlockIcon} />
+                    <div className={styles.inputBlock}>
+                        <IoIosLock className={styles.inputBlockIcon} />
 
-                                    <TextField
-                                        fullWidth
-                                        label='Ingresa tu contraseña'
-                                        type='password'
-                                        onChange={event => this.handleChange(event)}
-                                        name='password'
-                                    />
-                                </div>
+                        <TextField
+                            fullWidth
+                            label='Ingresa tu contraseña'
+                            type='password'
+                            onChange={event => setPassword(event.target.value)}
+                            name='password'
+                        />
+                    </div>
 
-                                {
-                                    <AuthContext.Consumer>
-                                        {(context) => (
-                                            <Button
-                                                fullWidth
-                                                className={styles.loginButton}
-                                                onClick={this.handleLogin}
-                                            >
-                                                Ingresar
-                                </Button>
-                                        )}
-                                    </AuthContext.Consumer>
-                                }
 
-                                <ErrorDialog
-                                    isOpen={this.state.errorDialogOpen}
-                                    close={() => this.setState({ errorDialogOpen: false })}
-                                    message={this.state.errorDialogMessage}
-                                />
-                            </Container>
-                        )
-                )}
-            </AuthContext.Consumer>
-        );
-    }
+                    <Button
+                        fullWidth
+                        className={styles.loginButton}
+                        onClick={handleLogin}
+                    >
+                        Ingresar
+                    </Button>
+
+                    <ErrorDialog
+                        isOpen={errorDialog.open}
+                        close={() => {
+                            setErrorDialog({
+                                ...errorDialog,
+                                open: false
+                            })
+                        }}
+                        message={errorDialog.message}
+                        title='Ha ocurrido un error al intentar ingresar:'
+                    />
+                </Container>
+            )
+    );
 }
 
 export default Login;

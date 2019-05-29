@@ -1,53 +1,41 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import styles from './UserHeader.module.scss';
-import StarRatings from 'react-star-ratings';
-import cssColors from './../../../scss/_colors.scss';
 import { Typography } from '@material-ui/core';
+import SocialMediaButtons from './SocialMediaButtons/SocialMediaButtons';
 
-const UserHeader = ({ user, ratingsEnabled, ratingRatio, addRating }) => {
+import { AuthContext } from './../../../Contexts/AuthContext';
+import UserRatings from './UserRatings/UserRatings';
+import { ProfileContext } from '../ProfileContext';
+
+const UserHeader = () => {
+    const { user, urlUserID } = useContext(ProfileContext);
+
+
+
     return (
         <div className={styles.userHeader}>
             <div className={styles.userImage}>
             </div>
+
             <div className={styles.userHeaderTitle}>
-                <div>
-                    <Typography variant='h6' color='textSecondary'>
-                        Perfíl de:
+                {
+                    urlUserID &&
+                    <div>
+                        <Typography variant='h6' color='textSecondary'>
+                            Perfíl de:
                             </Typography>
-                    <Typography variant='h2' className={styles.userName}>
-                        {`${user.name} ${user.lastname}`}
-                    </Typography>
-                </div>
+                        <Typography variant='h3' className={styles.userName}>
+                            {`${user.name} ${user.lastname}`}
+                        </Typography>
+                    </div>
+                }
             </div>
-            <div className={styles.userRating}>
-                <div>
-                    {
-                        ratingRatio &&
-                        <>
-                            <Typography variant='caption'>
-                                {`Puntaje promedio: ${ratingRatio}`}
-                            </Typography>
 
-                            <Typography variant='caption'>
-                                {`(Calificado ${Object.values(user.ratings).length} veces)`}
-                            </Typography>
-                        </>
-                    }
-                </div>
+            <SocialMediaButtons />
 
-                <StarRatings
-                    rating={ratingRatio}
-                    changeRating={rating => addRating(rating)}
-                    numOfStars={5}
-                    name='rating'
-                    starWidthAndHeight='1.4rem'
-                    starSpacing='0px'
-                    starRatedColor={cssColors.yellowLight}
-                    starEmptyColor={cssColors.greyLight}
-                    starSelectingHoverColor={cssColors.redLight}
-                    isSelectable={ratingsEnabled}
-                />
-            </div>
+            <UserRatings
+                ratings={user.ratings && Object.values(user.ratings)}
+            />
         </div>
     );
 }

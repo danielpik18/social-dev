@@ -1,0 +1,23 @@
+@import './../../../../scss/colors';
+
+.rating{
+    position: absolute;
+    bottom: .4rem;
+    right: .8rem;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    &Votes{
+        color: $grey;
+        font-size: .7rem !important;
+        margin-bottom: .4rem !important;
+    }
+
+    &Ratio{
+        color:$greyDark;
+        font-size: 1.6rem; 
+        margin-right: 1rem;
+    }
+}

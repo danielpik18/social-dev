@@ -4,16 +4,17 @@
     &Wrapper{
         background-color: $whiteLight;
         padding: 1.2rem;
+        position: relative;
     }
 
     &FieldsWrapper{
-        display: flex;
-        justify-content: space-between;
+        margin-right: 2rem;
     }
 
     &Field{
         display: flex;
         flex-direction: column;
+        margin-bottom: 1rem;
     }
 
     &Title{
@@ -25,5 +26,60 @@
             font-size: 2rem;
             margin-right: .4rem;
         }
+    }
+}
+
+.editButton{
+    font-size: 1rem !important;
+    background-color: $white !important;
+    border: solid 1px $whiteDark !important;
+    box-shadow: none !important;
+    color: $blackLight !important;
+    position: absolute !important;
+    bottom: 1.2rem;
+    right: 1.2rem;
+}
+
+.confirmEditButton{
+    font-size: 2rem !important;
+    background-color: $green !important;
+    border: solid 1px $white !important;
+    box-shadow: none !important;
+    color: $white !important;
+    position: absolute !important;
+    bottom: 1.2rem;
+    right: 1.2rem;
+}
+
+.editInfoField{
+   margin-bottom: 1rem;
+   background: $white;
+}
+
+.configBlock{
+    display: flex;
+    margin-bottom: 1rem;
+
+    &Value{
+        font-size: 2rem;
+        color: $greyDark;
+        margin-right: 2rem;
+    }
+}
+.configButton{
+    color: $greyDark;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    font-size: .9rem;
+
+    &Text{
+        color: $grey;
+        margin-right: .4rem;
+    }
+
+    &:hover{
+        text-decoration: underline;
+        text-decoration-color: $greyLight;
     }
 }

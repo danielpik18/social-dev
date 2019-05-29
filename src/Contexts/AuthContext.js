@@ -1,33 +1,25 @@
-import React, { Component } from 'react';
+import React, { useState, useEffect } from 'react';
 import { fire } from './../firebase';
 
 const AuthContext = React.createContext();
 
-class AuthProvider extends Component {
-    state = {
-        currentUser: null
-    }
+const AuthProvider = (props) => {
 
-    componentDidMount() {
+    useEffect(() => {
         fire.auth()
-            .onAuthStateChanged(user => this.setState({
-                currentUser: user
-            }));
-    }
+            .onAuthStateChanged(user => setCurrentUser(user));
+    });
 
-    render() {
-        const { children } = this.props;
-
-        return (
-            <AuthContext.Provider
-                value={{
-                    currentUser: this.state.currentUser
-                }}
-            >
-                {children}
-            </AuthContext.Provider>
-        );
-    }
+    const [currentUser, setCurrentUser] = useState(null);
+    return (
+        <AuthContext.Provider
+            value={{
+                currentUser: currentUser
+            }}
+        >
+            {props.children}
+        </AuthContext.Provider>
+    );
 }
 
 export {

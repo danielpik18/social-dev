@@ -53,7 +53,12 @@ const SideDrawer = ({ isOpen, toggle, userAuth }) => {
                         }
                     }
                 ] : []
-        )
+        ),
+        {
+            title: 'test',
+            icon: <IoIosLogIn />,
+            path: '/profileUppcooehiFUzPAHVav9ek2ot7Q23'
+        }
     ];
 
     return (

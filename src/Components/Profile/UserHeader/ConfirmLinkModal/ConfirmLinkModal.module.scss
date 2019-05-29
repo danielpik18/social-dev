@@ -1,0 +1,33 @@
+@import './../../../../scss/colors';
+
+.enterLinkModal{
+    padding: 2rem;
+    background: linear-gradient(to top, $whiteDark, $white);
+
+    &Title{
+        text-transform: uppercase;
+        color: $greyDark;
+        margin-bottom: 2rem !important;
+    }
+
+    &Confirm{
+        background-color: $green !important;
+        width: 2.4rem;
+        color: $white;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 1.2rem;
+        cursor: pointer;
+
+        transition: background-color .1s ease-in-out;
+
+        &:hover{
+            background-color: $greenLight !important;
+        }
+    }
+}
+
+.linkInputBlock{
+    display: flex;
+}

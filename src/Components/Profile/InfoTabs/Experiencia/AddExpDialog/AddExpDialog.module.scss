@@ -1,0 +1,21 @@
+@import './../../../../../scss/colors';
+
+.wrapper{
+    width: 24rem;
+    padding: 2rem;
+}
+
+.inputBlock{
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+
+    &Title{
+        font-size: 1.15rem;
+        color: $greyDark;
+    }
+}
+
+.steppers{
+    margin-top: 2rem;
+}
