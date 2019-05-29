@@ -1,11 +1,11 @@
 import React, { useContext } from 'react';
 import styles from './Steps.module.scss';
 import { TextField, Divider, Slide, Typography } from '@material-ui/core';
-import { IoIosBusiness } from 'react-icons/io';
+import { MdLocationOn } from 'react-icons/md';
 import { AddExpDialogContext } from '../AddExpDialogContext';
 
-const StepOne = ({ direction }) => {
-    const { enterpriseName, setEnterpriseName } = useContext(AddExpDialogContext);
+const StepThree = ({ direction }) => {
+    const {location, setLocation} = useContext(AddExpDialogContext);
 
     return (
         <Slide
@@ -15,12 +15,12 @@ const StepOne = ({ direction }) => {
         >
             <div className={styles.inputBlock}>
                 <div className={styles.inputBlockTitleWrapper}>
-                    <IoIosBusiness className={styles.inputBlockIcon} />
+                    <MdLocationOn className={styles.inputBlockIcon} />
                     <Typography
                         className={styles.inputBlockTitle}
                         variant='h6'
                     >
-                        ¿En que empresa trabajaste?
+                        ¿Donde trabajaste?
                     </Typography>
                 </div>
 
@@ -28,15 +28,15 @@ const StepOne = ({ direction }) => {
 
                 <TextField
                     variant='outlined'
-                    label='Nombre de la empresa'
-                    value={enterpriseName}
-                    placeholder='Ej. Microsoft'
+                    label='Localidad del empleo'
+                    value={location}
+                    placeholder='Ej. Barranquilla, Colombia'
                     fullWidth
-                    onChange={(event) => setEnterpriseName(event.currentTarget.value)}
+                    onChange={event => setLocation(event.currentTarget.value)}
                 />
             </div>
         </Slide>
     );
 }
 
-export default StepOne;
+export default StepThree;

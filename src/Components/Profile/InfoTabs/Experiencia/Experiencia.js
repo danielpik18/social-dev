@@ -1,43 +1,93 @@
 import React, { useContext, useState } from 'react';
-import styles from './Experiencia.module.scss';
 import AddItemButton from './../../../AddItemButton/AddItemButton';
-import { ProfileContext } from '../../ProfileContext';
-import { Dialog } from '@material-ui/core';
+import { Typography, Fade } from '@material-ui/core';
 import AddExpDialog from './AddExpDialog/AddExpDialog';
+import { IoMdBusiness, IoIosCloseCircleOutline } from 'react-icons/io';
+import styles from './Experiencia.module.scss';
+import cssColors from './../../../../scss/_colors.scss';
+
+import { ProfileContext } from '../../ProfileContext';
+import { ExperienciaContext } from './ExperienciaContext';
+import { AddExpDialogProvider } from './AddExpDialog/AddExpDialogContext';
+import ConfirmDeleteDialog from '../../../Dialogs/ConfirmDeleteDialog/ConfirmDeleteDialog';
+
+import { reBase } from './../../../../firebase';
+import { AuthContext } from '../../../../Contexts/AuthContext';
 
 const Experiencia = () => {
-    const { user } = useContext(ProfileContext);
-    const [addExpDialogOpen, setAddExpDialogOpen] = useState(false);
+    const [removeExpButtonID, setremoveExpButtonID] = useState(false);
+    const [showRemoveExpDialog, setShowRemoveExpDialog] = useState(false)
+
+    const { user, urlUserID } = useContext(ProfileContext);
+    const { setAddExpDialogOpen } = useContext(ExperienciaContext);
+    const { currentUser } = useContext(AuthContext);
+
+    const experienceIDs = user.experience ? Object.keys(user.experience) : [];
+    const experience = user.experience ? Object.values(user.experience) : [];
+
+    const handleDeleteExp = () => {
+        reBase.remove(`users/${currentUser.uid}/experience/${removeExpButtonID}`,
+            (error) => console.log(error));
+
+        setShowRemoveExpDialog(false);
+    };
 
     return (
         <div className={styles.wrapper}>
+            <div
+                variant='subtitle1'
+                className={styles.wrapperTitle}
+            >
+                Experiencias laborales
+            </div>
+
             {
-                user.experience &&
-                Object.values(user.experience).map((exp, index) => {
+                experience.map((exp, index) => {
+                    const expID = experienceIDs[index]
+
                     const startDate = new Date(exp.startDate);
-                    const endDate = (
-                        exp.endDate != 'present'
-                            ? new Date(exp.endDate)
-                            : new Date()
+                    const endDateText = (
+                        exp.endDate !== 'present'
+                            ? `hasta ${exp.endDate.substr(0, 4)}`
+                            : 'sigo trabajando aquí'
                     );
 
                     return (
-                        <div className={styles.expWrapper} key={index}>
+                        <div
+                            key={index}
+                            className={styles.expWrapper}
+                            onMouseEnter={() => setremoveExpButtonID(expID)}
+                            onMouseLeave={() => setremoveExpButtonID(expID)}
+                        >
                             <div
                                 className={styles.expImage}
                                 style={{
-                                    backgroundImage: `url(${exp.enterpriseImageURL})`
+                                    backgroundImage: `url(${exp.enterpriseImageURL})`,
+                                    ...(
+                                        !exp.enterpriseImageURL &&
+                                        {
+                                            backgroundColor: cssColors.blueLight,
+                                            color: cssColors.greyLight,
+                                            fontSize: '2rem',
+                                            display: 'flex',
+                                            alignItems: 'center',
+                                            justifyContent: 'center'
+                                        }
+                                    )
                                 }}
                             >
-
+                                {
+                                    !exp.enterpriseImageURL &&
+                                    <IoMdBusiness />
+                                }
                             </div>
                             <div className={styles.expInfo}>
                                 <div><b>{exp.jobTitle}</b>, {`en ${exp.enterpriseName}`}</div>
                                 <div>
                                     <small>
                                         {`
-                                    Desde ${startDate.getFullYear() + 1}, 
-                                    hasta ${endDate.getFullYear() + 1}, 
+                                    Desde ${startDate.getFullYear()}, 
+                                        ${endDateText}, 
                                     `}
                                         <span className={styles.expLocation}>
                                             {exp.location}
@@ -45,19 +95,59 @@ const Experiencia = () => {
                                     </small>
                                 </div>
                             </div>
+
+                            {
+                                removeExpButtonID === expID &&
+                                <Fade in>
+                                    <div
+                                        className={styles.removeExpButton}
+                                        onClick={() => setShowRemoveExpDialog(true)}
+                                    >
+                                        <IoIosCloseCircleOutline />
+                                    </div>
+                                </Fade>
+                            }
                         </div>
                     );
-                })}
+                })
+            }
 
-            <AddItemButton
-                text='Añadir experiencia laboral'
-                clicked={() => setAddExpDialogOpen(true)}
+            {
+                !user.experience &&
+                <div className={styles.noExpView}>
+                    <Typography variant='caption'>
+                        Aún no has agredado experiencias previas.
+                    </Typography>
+                </div>
+            }
+
+            {
+                !urlUserID &&
+                <AddItemButton
+                    text='Añadir experiencia laboral'
+                    clicked={() => setAddExpDialogOpen(true)}
+                />
+            }
+
+
+            {
+                //*******/
+                //DIALOGS
+                //*******/
+            }
+
+            <AddExpDialogProvider>
+                <AddExpDialog />
+            </AddExpDialogProvider>
+
+            <ConfirmDeleteDialog
+                isOpen={showRemoveExpDialog}
+                close={() => setShowRemoveExpDialog(false)}
+                confirm={() => handleDeleteExp()}
+                title='Confirmar eliminación.'
+                message='¿Estas seguro de querer borrar este artículo?'
             />
 
-            <AddExpDialog
-                isOpen={addExpDialogOpen}
-                toggle={setAddExpDialogOpen}
-            />
         </div>
     );
 }

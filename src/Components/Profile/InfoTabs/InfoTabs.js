@@ -14,6 +14,7 @@ import Experiencia from './Experiencia/Experiencia';
 import Estudios from './Estudios/Estudios';
 import Tecnologias from './Tecnologias/Tecnologias';
 import { ProfileContext } from '../ProfileContext';
+import { ExperienciaProvider } from './Experiencia/ExperienciaContext';
 
 const InfoTabs = () => {
     const [tabValue, setTabValue] = useState(0);
@@ -25,7 +26,11 @@ const InfoTabs = () => {
     const renderDevTab = () => {
         switch (tabValue) {
             case 0:
-                return <Experiencia />
+                return (
+                    <ExperienciaProvider>
+                        <Experiencia />
+                    </ExperienciaProvider>
+                )
             case 1:
                 return <Estudios />
             case 2: return <Tecnologias />

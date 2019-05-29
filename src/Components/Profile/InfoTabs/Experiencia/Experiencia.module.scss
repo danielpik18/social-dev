@@ -3,12 +3,20 @@
 .wrapper{
     background-color: $white;
     padding: 1.2rem;
+
+    &Title{
+        font-size: 1.2rem;
+        text-transform: uppercase;
+        color: $greyDark;
+        margin-bottom: 1rem;
+    }
 }
 
 .exp{
     &Wrapper{
         display: flex;
         margin-bottom: 2rem;
+        position: relative;
     }
 
     &Image{
@@ -20,5 +28,29 @@
 
     &Location{
         color: $grey;
+    }
+}
+
+.noExpView{
+    color: $grey;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 3rem 0;
+    padding-bottom: 4.6rem;
+}
+
+.removeExpButton{
+    position: absolute;
+    right: 2rem;
+    top: 50%;
+    transform: translate(0%, -50%);
+
+    font-size: 1.4rem;
+    color: $red;
+    cursor: pointer;
+
+    &:hover{
+        color: $redLight;
     }
 }

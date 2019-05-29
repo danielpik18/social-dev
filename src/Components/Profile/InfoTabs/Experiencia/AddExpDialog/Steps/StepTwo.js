@@ -1,8 +1,24 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import styles from './Steps.module.scss';
-import { TextField, Divider, Slide, Grid } from '@material-ui/core';
+import { Divider, Slide, Grid, Typography, TextField } from '@material-ui/core';
+import { AddExpDialogContext } from './../AddExpDialogContext';
 
 const StepTwo = ({ direction }) => {
+    const {
+        startDate,
+        setStartDate,
+        endDate,
+        setEndDate,
+        stillWorkingHere,
+        setStillWorkingHere
+    } = useContext(AddExpDialogContext);
+
+    const handleDateChange = event => {
+        event.target.name === 'startDate' ?
+            setStartDate(event.target.value)
+            : setEndDate(event.target.value);
+    };
+
     return (
         <Slide
             in
@@ -12,29 +28,59 @@ const StepTwo = ({ direction }) => {
             <Grid container>
                 <Grid item xs={6}>
                     <div className={styles.inputBlock}>
-                        <span className={styles.inputBlockTitle}>
-                            ¿Cuando empezaste?
-                        </span>
+                        <Typography
+                            className={styles.inputBlockTitle}
+                            variant='caption'
+                        >
+                            ¿En que fecha iniciaste este empleo?
+                        </Typography>
 
                         <Divider style={{ margin: '1rem 0' }} />
 
-                        <span>
-                            Seleccionar fecha
-                        </span>
+                        <TextField
+                            name='startDate'
+                            label='Fecha de inicio'
+                            type='date'
+                            value={startDate}
+                            InputLabelProps={{
+                                shrink: true,
+                            }}
+                            onChange={event => handleDateChange(event)}
+                        />
                     </div>
                 </Grid>
 
                 <Grid item xs={6}>
                     <div className={styles.inputBlock}>
-                        <span className={styles.inputBlockTitle}>
-                            ¿Cuando terminaste?
-                        </span>
+                        <Typography
+                            className={styles.inputBlockTitle}
+                            variant='caption'
+                        >
+                            ¿En que fecha dejaste este empleo?
+                        </Typography>
 
                         <Divider style={{ margin: '1rem 0' }} />
 
-                        <span>
-                            Seleccionar fecha
-                        </span>
+                        <TextField
+                            name='endDate'
+                            label='Fecha de salida'
+                            disabled={stillWorkingHere}
+                            type='date'
+                            value={endDate}
+                            InputLabelProps={{
+                                shrink: true,
+                            }}
+                            onChange={event => handleDateChange(event)}
+                        />
+
+                        <div className={styles.currentlyWorkingHere}>
+                            <small>Sigo trabajando aquí</small>
+                            <input
+                                type='checkbox'
+                                checked={stillWorkingHere}
+                                onChange={event => setStillWorkingHere(event.currentTarget.checked)}
+                            />
+                        </div>
                     </div>
                 </Grid>
             </Grid>

@@ -1,11 +1,11 @@
 import React, { useContext } from 'react';
 import styles from './Steps.module.scss';
 import { TextField, Divider, Slide, Typography } from '@material-ui/core';
-import { IoIosBusiness } from 'react-icons/io';
+import { IoIosMedal } from 'react-icons/io';
 import { AddExpDialogContext } from '../AddExpDialogContext';
 
-const StepOne = ({ direction }) => {
-    const { enterpriseName, setEnterpriseName } = useContext(AddExpDialogContext);
+const StepFour = ({ direction }) => {
+    const { jobTitle, setJobTitle } = useContext(AddExpDialogContext);
 
     return (
         <Slide
@@ -15,12 +15,12 @@ const StepOne = ({ direction }) => {
         >
             <div className={styles.inputBlock}>
                 <div className={styles.inputBlockTitleWrapper}>
-                    <IoIosBusiness className={styles.inputBlockIcon} />
+                    <IoIosMedal className={styles.inputBlockIcon} />
                     <Typography
                         className={styles.inputBlockTitle}
-                        variant='h6'
+                        variant='subtitle2'
                     >
-                        ¿En que empresa trabajaste?
+                        ¿Cual era el título del puesto que ocupabas?
                     </Typography>
                 </div>
 
@@ -28,15 +28,15 @@ const StepOne = ({ direction }) => {
 
                 <TextField
                     variant='outlined'
-                    label='Nombre de la empresa'
-                    value={enterpriseName}
-                    placeholder='Ej. Microsoft'
+                    label='Título del puesto'
+                    value={jobTitle}
+                    placeholder='Ej. Desarrollador Web, Back End'
                     fullWidth
-                    onChange={(event) => setEnterpriseName(event.currentTarget.value)}
+                    onChange={event => setJobTitle(event.currentTarget.value)}
                 />
             </div>
         </Slide>
     );
 }
 
-export default StepOne;
+export default StepFour;

@@ -26,7 +26,7 @@ const SearchView = () => {
 
                 setSearchResults(usersWithID);
             });
-    })
+    }, []);
 
     return (
         <Container maxWidth='md' className={styles.searchWrapper}>

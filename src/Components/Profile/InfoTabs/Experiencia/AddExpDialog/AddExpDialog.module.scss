@@ -1,21 +1,20 @@
 @import './../../../../../scss/colors';
 
 .wrapper{
-    width: 24rem;
+    width: 28rem;
     padding: 2rem;
-}
-
-.inputBlock{
-    display: flex;
-    flex-direction: column;
-    text-align: center;
-
-    &Title{
-        font-size: 1.15rem;
-        color: $greyDark;
-    }
 }
 
 .steppers{
     margin-top: 2rem;
+
+    &Nav{
+        display: flex;
+        align-items: flex-end;
+
+        &Icon{
+            font-size: 1.4rem;
+            color: $greyDark;
+        }
+    }
 }

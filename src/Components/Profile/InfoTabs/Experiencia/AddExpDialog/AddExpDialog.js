@@ -1,12 +1,28 @@
-import React, { useState } from 'react';
-import { Dialog, TextField, Divider, Grid, MobileStepper, Button } from '@material-ui/core';
+import React, { useState, useContext } from 'react';
+import { Dialog, MobileStepper, Button } from '@material-ui/core';
 import styles from './AddExpDialog.module.scss';
 import StepOne from './Steps/StepOne';
 import StepTwo from './Steps/StepTwo';
+import StepThree from './Steps/StepThree';
+import StepFour from './Steps/StepFour';
+import StepFive from './Steps/StepFive';
 
-const AddExpDialog = ({ isOpen, toggle }) => {
+import ErrorDialog from './../../../../ErrorDialog/ErrorDialog';
+
+import {
+    IoMdArrowDropleft,
+    IoMdArrowDropright
+} from 'react-icons/io';
+
+import { AddExpDialogContext } from './AddExpDialogContext';
+import { ExperienciaContext } from '../ExperienciaContext';
+
+const AddExpDialog = () => {
     const [activeStep, setActiveStep] = useState(0);
     const [stepDirection, setStepDirection] = useState('right');
+
+    const { addExpDialogOpen, setAddExpDialogOpen } = useContext(ExperienciaContext);
+    const { errorDialog, setErrorDialog } = useContext(AddExpDialogContext);
 
     const handleStepChange = (direction) => {
         if (direction === 'forward') {
@@ -20,27 +36,32 @@ const AddExpDialog = ({ isOpen, toggle }) => {
 
     return (
         <Dialog
-            open={isOpen}
-            onClose={() => toggle(false)}
+            open={addExpDialogOpen}
+            onClose={() => setAddExpDialogOpen(false)}
         >
             <div className={styles.wrapper}>
                 {activeStep === 0 && <StepOne direction={stepDirection} />}
                 {activeStep === 1 && <StepTwo direction={stepDirection} />}
+                {activeStep === 2 && <StepThree direction={stepDirection} />}
+                {activeStep === 3 && <StepFour direction={stepDirection} />}
+                {activeStep === 4 && <StepFive direction={stepDirection} />}
 
                 <MobileStepper
                     className={styles.steppers}
                     variant='progress'
-                    steps={6}
+                    steps={5}
                     position='static'
                     activeStep={activeStep}
                     nextButton={
                         <Button
                             size='small'
                             onClick={() => handleStepChange('forward')}
-                            disabled={activeStep === 5}
+                            disabled={activeStep === 4}
                         >
-                            Next
-                        </Button>
+                            <div className={styles.steppersNav}>
+                                <span>Next</span>
+                                <IoMdArrowDropright className={styles.steppersNavIcon} />
+                            </div></Button>
                     }
                     backButton={
                         <Button
@@ -48,10 +69,24 @@ const AddExpDialog = ({ isOpen, toggle }) => {
                             onClick={() => handleStepChange('back')}
                             disabled={activeStep === 0}
                         >
-                            Back
+                            <div className={styles.steppersNav}>
+                                <IoMdArrowDropleft className={styles.steppersNavIcon} />
+                                <span>Back</span>
+                            </div>
                         </Button>
                     }
                 />
+
+                <ErrorDialog
+                    isOpen={errorDialog.open}
+                    close={() => setErrorDialog({
+                        ...errorDialog,
+                        open: false
+                    })}
+                    message={errorDialog.message}
+                    title='No se ha podido agregar este item.'
+                />
+
             </div>
         </Dialog>
     );

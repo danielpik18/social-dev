@@ -1,0 +1,34 @@
+@import './../../../scss/colors';
+
+.wrapper{
+    border: 1px solid $red;
+    padding: 2rem;
+    text-align: center;
+}
+
+.title{
+    color: $redDark;
+}
+
+.message{
+    color: $greyDark;
+}
+
+.actionButtons{
+    margin-top: 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    &Confirm{
+        font-size: 2rem !important;
+        background-color: $green !important;
+        color: $white !important;
+    }
+
+    &Cancel{
+        font-size: 2rem !important;
+        background-color: $red !important;
+        color: $white !important;
+    }
+}

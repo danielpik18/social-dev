@@ -1,0 +1,45 @@
+@import './../../../../../../scss/colors';
+
+.inputBlock{
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    margin: 0 2rem;
+
+    &Title{
+        color: $greyDark;
+
+        &Wrapper{
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+    }
+
+    &Icon{
+        color: $greyDark;
+        margin-right: 1rem;
+        font-size: 1.4rem;
+    }
+
+    &ConfirmButton{
+        background-color: $green !important;
+        margin-top: 1rem !important;
+        
+        
+        &Text{
+            display: flex;
+            align-items: center;
+            color: $white;
+            font-weight: bold;
+        }
+    }
+}
+
+.currentlyWorkingHere{
+    margin-top: 1rem;
+    font-size: .8rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+}
