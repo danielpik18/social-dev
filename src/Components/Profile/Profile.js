@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useContext } from 'react';
 import styles from './Profile.module.scss';
-import { Container, Divider } from '@material-ui/core';
+import { Container } from '@material-ui/core';
+import ReactLoading from 'react-loading';
 import UserHeader from './UserHeader/UserHeader';
 import UserInfo from './UserInfo/UserInfo';
 import InfoTabs from './InfoTabs/InfoTabs';
@@ -10,6 +11,7 @@ import { AuthContext } from './../../Contexts/AuthContext';
 import { ProfileContext } from './ProfileContext';
 
 import { reBase } from './../../firebase';
+import { UserInfoProvider } from './UserInfo/UserInfoContext';
 
 const Profile = (props) => {
     const { currentUser } = useContext(AuthContext);
@@ -22,7 +24,7 @@ const Profile = (props) => {
 
         if (profileUrlId) {
             userID = profileUrlId;
-            setUrlUserID(profileUrlId)
+            setUrlUserID(profileUrlId);
         }
         else {
             setUrlUserID(null)
@@ -37,16 +39,28 @@ const Profile = (props) => {
             },
             state: 'user'
         })
-    }, [])
+    }, [props.match])
 
 
-    return user && (
-        <Container maxWidth='md' className={styles.profileWrapper}>
-            <UserHeader />
-            <UserInfo />
-            <InfoTabs />
-        </Container>
-    );
+    return !user ?
+        (
+            <ReactLoading
+                type='spin'
+                color="grey"
+                className={styles.loader}
+            />
+        )
+        : (
+            <Container maxWidth='md' className={styles.profileWrapper}>
+                <UserHeader />
+
+                <UserInfoProvider>
+                    <UserInfo />
+                </UserInfoProvider>
+
+                <InfoTabs />
+            </Container>
+        );
 }
 
 export default Profile;

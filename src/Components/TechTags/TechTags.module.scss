@@ -1,0 +1,69 @@
+@import './../../scss/colors';
+
+.tags{
+    display: flex;
+    justify-content: center;
+    flex-flow: row wrap;
+}
+
+.tag{
+    position: relative;
+    max-width: fit-content;
+    margin-right: .75rem;
+    margin-top: .6rem;
+
+    background-color: rgba($grey, 25);
+    font-size: .75rem;
+    padding: .1rem .6rem;
+    border-radius: 6px 0 0 0;
+    color: $whiteDark;
+
+    &Disabled{
+        
+    }
+
+    &Clickable{
+        color: $greyDark;
+        background-color: rgba($grey, .7);
+    
+        &:nth-child(n+7){
+            background-color: $greenLight;
+        }
+        &:nth-child(n+10){
+            background-color: $redLight;
+        }
+        &:nth-child(n+17){
+            background-color: $cyanLight;
+        }
+        &:nth-child(n+20){
+            background-color: $yellowLight;
+        }
+        &:nth-child(n+24){
+            background-color: $purpleLight;
+        }
+        &:nth-child(n+29){
+            background-color: $orangeLight;
+        }
+    
+        &:hover{
+            opacity: .85;
+            transform: scale(1.1);
+            color: $grey;
+        }
+    }
+
+    &Checked{
+        background-color: $blackLight;
+
+        &::after{
+            content: "";
+            position: absolute;
+            display: block;
+            top: 50%;
+            left: 0;
+            width: 100%;
+            height: 1rem;
+            border-top: $grey 2px solid;
+        }
+    }
+}

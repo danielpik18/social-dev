@@ -1,7 +1,19 @@
+@import './../../scss/colors';
+@import './../../scss/mixins';
+
 .searchWrapper{
     margin-top: 4rem;
 }
 
 .searchResults{
     margin-top: 2rem;
+
+    &Title{
+        font-size: 1.6rem;
+        color: $greyDark;
+    }
+}
+
+.loader{
+    @include centerDivAbsolute;
 }

@@ -1,0 +1,16 @@
+@import './../../scss/colors';
+
+.techPicker{
+    &Wrapper{
+        text-align: center;
+        background-color: $whiteLight;
+        padding: 2rem;
+    }
+
+    &Title{
+        margin-bottom: 2rem;
+        color: $greyDark;
+        text-transform: uppercase;
+        font-size: 1.2rem;
+    }
+}

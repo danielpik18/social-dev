@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import {
     Drawer,
     List,
@@ -12,16 +12,21 @@ import {
     IoIosLogOut
 } from 'react-icons/io';
 
+import { TiEdit } from 'react-icons/ti';
+
 import { Link } from 'react-router-dom';
 
 import { fire } from './../../../firebase';
 
 import styles from './SideDrawer.module.scss';
+import { AuthContext } from '../../../Contexts/AuthContext';
 
-const SideDrawer = ({ isOpen, toggle, userAuth }) => {
+const SideDrawer = ({ isOpen, toggle }) => {
+    const { currentUser } = useContext(AuthContext);
+
     const menuOptions = [
         ...(
-            userAuth ?
+            currentUser ?
                 [
                     {
                         title: 'Mi perfil',
@@ -31,7 +36,7 @@ const SideDrawer = ({ isOpen, toggle, userAuth }) => {
                 ] : []
         ),
         ...(
-            !userAuth ?
+            !currentUser ?
                 [
                     {
                         title: 'Ingresar',
@@ -41,7 +46,17 @@ const SideDrawer = ({ isOpen, toggle, userAuth }) => {
                 ] : []
         ),
         ...(
-            userAuth ?
+            !currentUser ?
+                [
+                    {
+                        title: 'Registrarse',
+                        icon: <TiEdit />,
+                        path: '/'
+                    }
+                ] : []
+        ),
+        ...(
+            currentUser ?
                 [
                     {
                         title: 'Log out',
@@ -53,18 +68,13 @@ const SideDrawer = ({ isOpen, toggle, userAuth }) => {
                         }
                     }
                 ] : []
-        ),
-        {
-            title: 'test',
-            icon: <IoIosLogIn />,
-            path: '/profileUppcooehiFUzPAHVav9ek2ot7Q23'
-        }
+        )
     ];
 
     return (
         <Drawer
             open={isOpen}
-            onClose={toggle}
+            onClose={() => toggle(false)}
         >
             <List className={styles.drawerMenu}>
                 {
@@ -78,7 +88,7 @@ const SideDrawer = ({ isOpen, toggle, userAuth }) => {
                                 width: '100%',
                                 textAlign: 'center'
                             }}
-                            onClick={option.clicked ? option.clicked : toggle}
+                            onClick={option.clicked ? option.clicked : () => toggle(false)}
 
                         >
                             <ListItem button >

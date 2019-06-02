@@ -1,13 +1,27 @@
 @import './../../../../scss/colors';
 
-.filtersWrapper{
-    padding: 1.4rem;
-    width: 30rem;
-    background-color: $whiteLight;
+.filters{
+    &Wrapper{
+        padding: .8rem 0 !important;
+        background: linear-gradient($white, $whiteLight);
+        text-align: center;
+        height: 30rem;
+        overflow: hidden;
+    }
+
+    &Bar{
+        background-color: $greyLight !important;
+        margin-top: 1.2rem;
+        color: $greyDark !important;
+    }
+
+    &Title{
+        color: $greyDark;
+    }
 }
 
-.filtersBar{
-    background-color: $greyLight !important;
-    margin-top: 1.2rem;
-    color: $greyDark !important;
+.filterTabWrapper{
+    background: linear-gradient(to right, $white, $whiteDark);
+    width: 40rem;
+    height: 100%;
 }

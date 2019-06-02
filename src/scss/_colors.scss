@@ -21,12 +21,24 @@ $yellowLight: rgb(214, 228, 88);
 $yellowDark: rgb(127, 133, 36);
 
 $red: rgb(196, 68, 45);
-$redLight: rgb(228, 116, 88);
-$redDark: rgb(133, 47, 36);
+$redLight: rgb(221, 139, 129);
+$redDark: rgb(150, 101, 46);
+
+$orange: rgb(196, 113, 45);
+$orangeLight: rgb(228, 146, 99);
+$orangeDark: rgb(133, 47, 36);
 
 $blue: rgb(45, 85, 196);
-$blueLight: rgb(88, 125, 228);
+$blueLight: rgb(109, 141, 230);
 $blueDark: rgb(36, 62, 133);
+
+$cyan: rgb(45, 166, 196);
+$cyanLight: rgb(88, 207, 228);
+$cyanDark: rgb(36, 114, 133);
+
+$purple: rgb(116, 45, 196);
+$purpleLight: rgb(147, 109, 235);
+$purpleDark: rgb(73, 36, 133);
 
 :export{
     grey: $grey;
@@ -53,7 +65,19 @@ $blueDark: rgb(36, 62, 133);
     redLight: $redLight;
     redDark: $redDark;
 
+    orange: $orange;
+    orangeLight: $orangeLight;
+    orangeDark: $orangeDark;
+
     blue: $blue;
     blueLight: $blueLight;
     blueDark: $blueDark;
+
+    cyan: $cyan;
+    cyanLight: $cyanLight;
+    cyanDark: $cyanDark;
+
+    purple: $purple;
+    purpleLight: $purpleLight;
+    purpleDark: $purpleDark;
 }

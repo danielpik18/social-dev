@@ -1,4 +1,4 @@
-import React, { useContext, useState, useEffect } from 'react';
+import React, { useContext, useState } from 'react';
 import {
     Typography,
     Divider,
@@ -11,42 +11,56 @@ import styles from './UserInfo.module.scss';
 import { TiEdit } from 'react-icons/ti';
 import {
     IoMdCreate,
-    IoIosSettings,
     IoIosCheckmark,
     IoIosAlbums
 } from 'react-icons/io';
 import { ProfileContext } from '../ProfileContext';
+import { UserInfoContext } from './UserInfoContext';
+import { reBase } from '../../../firebase';
+import { AuthContext } from '../../../Contexts/AuthContext';
 
 const UserInfo = () => {
     const { user, urlUserID } = useContext(ProfileContext);
-    const [infoEditable, setInfoEditable,] = useState(false);
+    const { currentUser } = useContext(AuthContext);
+
+    const {
+        editMode,
+        setEditMode,
+        infoEditable
+    } = useContext(UserInfoContext);
+
     const [showEditButton, setShowEditButton] = useState(false);
-    const [editMode, setEditMode] = useState(false);
+    const [bioReadMore, setBioReadMore] = useState(
+        (user.bio && user.bio.length > 300) && true
+    );
 
-    useEffect(() => {
-        (user && !urlUserID) && setInfoEditable(true);
-    });
-
-    const confirmEdit = () => {
-        setEditMode(false)
-    }
+    const [bioEdited, setBioEdited] = useState(user.bio && user.bio);
+    const [nameEdited, setNameEdited] = useState(user.name);
+    const [lastnameEdited, setLastnameEdited] = useState(user.lastname);
 
     const infoFields = [
-        {
-            name: 'Correo electrónico',
-            value: user.email
-        },
+        (
+            !urlUserID &&
+            {
+                name: 'Correo electrónico',
+                value: user.email
+            }
+        ),
         {
             name: 'Rol',
             value: user.role
+        },
+        {
+            name: 'Años totales de experiencia',
+            value: user.totalExperienceYears ? user.totalExperienceYears : '--'
         }
     ];
 
     const editableInfoFields = [
         {
             display: true,
-            name: 'Nombre completo',
-            value: `${user.name} ${user.lastname}`,
+            name: 'Nombre(s)',
+            value: `${user.name}`,
             input: (
                 <Fade in timeout={5000}>
                     <>
@@ -56,18 +70,32 @@ const UserInfo = () => {
                             <TextField
                                 fullWidth
                                 label='Nombre(s)'
-                                value={user.name}
+                                value={nameEdited}
+                                onChange={(e) => setNameEdited(e.target.value)}
                                 InputProps={{
                                     disableUnderline: true
                                 }}
                             />
                         </div>
+                    </>
+                </Fade>
+            )
+        },
+        {
+            display: true,
+            name: 'Apellido(s)',
+            value: `${user.lastname}`,
+            input: (
+                <Fade in timeout={5000}>
+                    <>
+                        <Divider style={{ margin: '1rem 0' }} />
 
                         <div className={styles.editInfoField}>
                             <TextField
                                 fullWidth
                                 label='Apellido(s)'
-                                value={user.lastname}
+                                value={lastnameEdited}
+                                onChange={(e) => setLastnameEdited(e.target.value)}
                                 InputProps={{
                                     disableUnderline: true
                                 }}
@@ -78,48 +106,23 @@ const UserInfo = () => {
                     </>
                 </Fade>
             )
-        },
-        {
-            display: user.role === 'Desarrollador',
-            name: 'Disponibilidad',
-            value: user.availability ? user.availability : '--',
-            input: (
-                <div className={styles.configBlock}>
-                    <span className={styles.configBlockValue}>
-                        {user.projects ? user.projects : '--'}
-                    </span>
-
-                    <div className={styles.configButton}>
-                        <span className={styles.configButtonText}>
-                            Configurar disponibilidad
-                        </span>
-
-                        <IoIosSettings />
-                    </div>
-                </div>
-            )
-        },
-        {
-            display: user.role === 'Desarrollador',
-            name: 'Proyectos realizados',
-            value: user.projects ? user.projects : '--',
-            input: (
-                <div className={styles.configBlock}>
-                    <span className={styles.configBlockValue}>
-                        {user.projects ? user.projects : '--'}
-                    </span>
-
-                    <div className={styles.configButton}>
-                        <span className={styles.configButtonText}>
-                            Gestionar proyectos
-                        </span>
-
-                        <IoIosAlbums />
-                    </div>
-                </div>
-            )
         }
     ];
+
+    const confirmEdit = () => {
+        const editedUser = {
+            ...user,
+            name: nameEdited,
+            lastname: lastnameEdited,
+            bio: bioEdited
+        };
+
+        reBase.post(`users/${currentUser.uid}`, {
+            data: editedUser
+        });
+
+        setEditMode(false);
+    }
 
     return (
         <div
@@ -132,6 +135,60 @@ const UserInfo = () => {
                 <Typography variant='h6'>
                     Informacion general:
                 </Typography>
+            </div>
+
+            <Divider style={{ margin: '1rem 0' }} />
+
+            <Typography variant='h6'>
+                Bio:
+            </Typography>
+
+            <div className={styles.userBio}>
+                {
+                    !editMode &&
+                    user.bio && (
+                        bioReadMore
+                            ? user.bio.slice(0, 300)
+                            : user.bio
+                    )
+                }
+
+                {
+                    !editMode &&
+                    user.bio && (
+                        bioReadMore
+                            ?
+                            <span
+                                className={styles.userBioReadMore}
+                                onClick={() => setBioReadMore(false)}
+                            >
+                                Leer más
+                            </span>
+                            :
+                            <span
+                                className={styles.userBioReadMore}
+                                onClick={() => setBioReadMore(true)}
+                            >
+                                Leer menos
+                        </span>
+                    )
+                }
+
+                {
+                    editMode &&
+                    (
+                        <TextField
+                            label='Biografía'
+                            variant='outlined'
+                            multiline
+                            fullWidth
+                            rows={6}
+                            rowsMax={8}
+                            value={bioEdited}
+                            onChange={(e) => setBioEdited(e.target.value)}
+                        />
+                    )
+                }
             </div>
 
             <Divider style={{ margin: '1rem 0' }} />
@@ -178,7 +235,9 @@ const UserInfo = () => {
                 <Grid item xs={6}>
                     <div className={styles.infoFieldsWrapper}>
                         {
+                            !editMode &&
                             infoFields.map(field => (
+                                field &&
                                 <div
                                     className={styles.infoField}
                                     key={field.name}

@@ -29,6 +29,18 @@
     }
 }
 
+.userBio{
+    color: $greyDark;
+    font-size: .85rem;
+
+    &ReadMore{
+        color: $blueLight;
+        font-size: .85rem;
+        cursor: pointer;
+        margin-left: .4rem;
+    }
+}
+
 .editButton{
     font-size: 1rem !important;
     background-color: $white !important;

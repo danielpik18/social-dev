@@ -1,0 +1,10 @@
+@import './../../../../../scss/mixins';
+@import './../../../../../scss/colors';
+
+.loader{
+    @include centerDivAbsolute;
+}
+
+.techTagsWrapper{
+    padding: 2rem 1rem;
+}

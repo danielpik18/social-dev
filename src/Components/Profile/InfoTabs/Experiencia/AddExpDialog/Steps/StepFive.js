@@ -11,7 +11,7 @@ import validUrl from 'valid-url';
 import { ExperienciaContext } from '../../ExperienciaContext';
 
 const StepFive = ({ direction }) => {
-    const { setAddExpDialogOpen } = useContext(ExperienciaContext);
+    const { setAddExpDialogOpen, calculateTotalExperienceYears } = useContext(ExperienciaContext);
 
     const {
         enterpriseImageURL,
@@ -22,8 +22,10 @@ const StepFive = ({ direction }) => {
         endDate,
         location,
         stillWorkingHere,
-        
-        setErrorDialog
+
+        setErrorDialog,
+
+        resetState
     } = useContext(AddExpDialogContext);
 
     const { currentUser } = useContext(AuthContext);
@@ -56,9 +58,15 @@ const StepFive = ({ direction }) => {
                                 message: error
                             });
                         }
-                        else setAddExpDialogOpen(false);
+                        else {
+                            calculateTotalExperienceYears();
+                            resetState();
+                            setAddExpDialogOpen(false);
+                        };
                     }
                 });
+
+
             }
             else {
                 setErrorDialog({

@@ -16,10 +16,11 @@
 
 .user{
     &Image{
-        background-image: url('./../../../images/userImage.png');
         background-size: cover;
+        background-position: center;
         width: 6rem;
         height: 6rem;
+        border-radius: 50%;
         margin-right: 2rem;
     }
 
@@ -46,7 +47,7 @@
     }
 
     &Value{
-        font-size: 1.4rem;
-        color: $greyDark;
+        margin-top: .2rem;
+        color: $blackLight;
     }
 }

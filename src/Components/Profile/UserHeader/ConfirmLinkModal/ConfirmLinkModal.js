@@ -19,7 +19,7 @@ import styles from './ConfirmLinkModal.module.scss';
 import { ProfileContext } from '../../ProfileContext';
 
 import validUrl from 'valid-url';
-import ErrorDialog from '../../../ErrorDialog/ErrorDialog';
+import ErrorDialog from '../../../Dialogs/ErrorDialog/ErrorDialog';
 
 const ConfirmLinkModal = ({ isOpen, toggle, linkTitle }) => {
     const [link, setLink] = useState('');
@@ -101,7 +101,7 @@ const ConfirmLinkModal = ({ isOpen, toggle, linkTitle }) => {
                         })
                     }}
                     message={errorDialog.message}
-                    title='Ha ocurrido un error al intentar ingresar:'
+                    title='Ha ocurrido un error al agregar el enlace:'
                 />
             </div>
         </Dialog>

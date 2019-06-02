@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { useContext } from 'react';
 import {
     IconButton,
     Paper,
@@ -6,57 +6,64 @@ import {
     Dialog
 } from '@material-ui/core';
 
-import {Link} from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 import { IoMdOptions, IoIosSearch } from 'react-icons/io';
 import styles from './SearchBar.module.scss';
 import SearchFilters from './SearchFilters/SearchFilters';
+import { SearchBarContext } from './SearchBarContext';
+import { SearchFiltersContext } from './SearchFilters/SearchFiltersContext';
 
-class SearchBar extends Component {
-    state = {
-        filterDialogOpen: false,
-        selectedFilter: 0
+const SearchBar = () => {
+    const {
+        filterDialogOpen,
+        setFilterDialogOpen
+    } = useContext(SearchBarContext);
+    const { techTags, expYearsMin, expYearsMax } = useContext(SearchFiltersContext);
+
+    const techTagsParam = techTags && techTags.join(',');
+
+    const expYearsRange = (
+        (expYearsMin && expYearsMax)
+        && `${expYearsMin}-${expYearsMax}`
+    );
+
+    let link = `/search`;
+
+    if ((techTags && techTags.length > 0) && expYearsRange) {
+        link = `/search/${techTagsParam}/${expYearsRange}`;
+    }
+    else if ((techTags && techTags.length > 0) && !expYearsRange) {
+        link = `/search/${techTagsParam}`;
+    }
+    else if ((!techTags || techTags.length === 0) && expYearsRange) {
+        link = `/search/null/${expYearsRange}`;
     }
 
-    toggleFilterDialog = () => this.setState({
-        filterDialogOpen: !this.state.filterDialogOpen
-    });
+    return (
+        <>
+            <Paper className={styles.searchBar}>
+                <IconButton onClick={() => setFilterDialogOpen(true)}>
+                    <IoMdOptions />
+                </IconButton>
+                <InputBase placeholder="Buscar personas" />
 
-    render() {
-        const techs = [
-            'React JS',
-            'Node JS',
-            'PHP',
-            'Angular JS'
-        ];
-
-        return (
-            <>
-                <Paper className={styles.searchBar}>
-                    <IconButton onClick={this.toggleFilterDialog}>
-                        <IoMdOptions />
+                <Link to={link}>
+                    <IconButton>
+                        <IoIosSearch />
                     </IconButton>
-                    <InputBase placeholder="Buscar personas" />
+                </Link>
+            </Paper >
 
-                    <Link to='/search'>
-                        <IconButton>
-                            <IoIosSearch />
-                        </IconButton>
-                    </Link>
-                </Paper>
-
-                <Dialog
-                    open={this.state.filterDialogOpen}
-                    onBackdropClick={this.toggleFilterDialog}
-                >
-                    <SearchFilters
-                        selectedFilter={this.state.selectedFilter}
-                        change={this.changeFilterTab}
-                    />
-                </Dialog>
-            </>
-        );
-    }
+            <Dialog
+                maxWidth='xl'
+                open={filterDialogOpen}
+                onBackdropClick={() => setFilterDialogOpen(false)}
+            >
+                <SearchFilters />
+            </Dialog>
+        </>
+    );
 }
 
 export default SearchBar;

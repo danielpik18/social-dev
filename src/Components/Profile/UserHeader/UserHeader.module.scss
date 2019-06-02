@@ -1,4 +1,5 @@
 @import './../../../scss/colors';
+@import './../../../scss/mixins';
 
 .user{
     &Header{
@@ -25,10 +26,60 @@
     }
     
     &Image{
-        background-image: url('./../../../images/userImage.png');
+        position: relative;
         width: 10rem;
         height: 10rem;
         background-size: cover;
+        background-repeat: no-repeat;
+        background-position: center;
         margin-left: 4rem;
+        border-radius: 50%;
+        border: solid 1px $whiteDark;
+
+        transition: opacity .5s;
+        
+
+        &Hover{
+            opacity: 1;
+            cursor: pointer;
+            transition: opacity .15s;
+
+            &:hover{
+
+                &::after{
+                    content: "";
+                    display: block;
+                    @include centerDivAbsolute;
+
+                    width: 40%;
+                    height: 40%;
+
+                    opacity: .5;
+
+                    background: url('https://cdn4.iconfinder.com/data/icons/ionicons/512/icon-image-128.png');
+                    background-size: cover;
+                }
+            }
+        }
     }
+}
+
+.messageUserFab{
+    background-color: $whiteLight !important;
+    border: solid 1px $whiteDark !important;
+    position: absolute !important;
+    box-shadow: none !important;
+    bottom: 1.6rem;
+    left: 14rem;
+
+    font-size: 1.4rem !important;
+    color: $blue !important;
+
+    &:hover{
+        color: $yellow !important;
+    }
+}
+
+.loader{
+    @include centerDivAbsolute;
 }

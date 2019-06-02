@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, useState, useContext } from 'react';
 import {
     AppBar,
     Toolbar,
@@ -11,50 +11,45 @@ import SideDrawer from './SideDrawer/SideDrawer';
 
 import { Link } from 'react-router-dom';
 import SearchBar from './SearchBar/SearchBar';
+import { SearchBarProvider } from './SearchBar/SearchBarContext';
+import { SearchViewProvider } from '../SearchView/SearchViewContext';
+import { AuthContext } from '../../Contexts/AuthContext';
 
-import { AuthContext } from './../../Contexts/AuthContext';
 
+const Navigation = () => {
+    const { currentUser } = useContext(AuthContext);
+    const [isDrawerOpen, setIsDrawerOpen] = useState(false)
 
-class Navigation extends Component {
-    state = {
-        isDrawerOpen: false
-    }
+    return (
+        <>
+            <AppBar position='sticky' >
+                <Toolbar className={styles.wrapper}>
+                    <Link to='/'>
+                        <div className={styles.logo}></div>
+                    </Link>
 
-    toggleDrawer = () => this.setState({
-        isDrawerOpen: !this.state.isDrawerOpen
-    });
+                    {
+                        currentUser &&
+                        <SearchBarProvider>
+                            <SearchViewProvider>
+                                <SearchBar />
+                            </SearchViewProvider>
+                        </SearchBarProvider>
+                    }
 
-    render() {
-        return (
-            <>
-                <AppBar position='sticky' >
-                    <Toolbar className={styles.wrapper}>
-                        <Link to='/'>
-                            <div className={styles.logo}></div>
-                        </Link>
+                    <IconButton onClick={() => setIsDrawerOpen(true)}>
+                        <IoIosMenu className={styles.menuIcon} />
+                    </IconButton>
+                </Toolbar>
+            </AppBar>
 
-                        <SearchBar />
+            <SideDrawer
+                isOpen={isDrawerOpen}
+                toggle={setIsDrawerOpen}
+            />
 
-                        <IconButton onClick={this.toggleDrawer}>
-                            <IoIosMenu className={styles.menuIcon} />
-                        </IconButton>
-                    </Toolbar>
-                </AppBar>
-
-                <AuthContext.Consumer>
-                    {context => {
-                        return (
-                            <SideDrawer
-                                isOpen={this.state.isDrawerOpen}
-                                toggle={this.toggleDrawer}
-                                userAuth={context.currentUser !== null}
-                            />
-                        );
-                    }}
-                </AuthContext.Consumer>
-            </>
-        );
-    }
+        </>
+    );
 }
 
 export default Navigation;

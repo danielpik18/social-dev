@@ -1,0 +1,18 @@
+@import './../../scss/colors';
+
+.messagesFloatingButton{
+    position: fixed !important;
+    bottom: 2rem !important;
+    right: 4rem !important;
+    background-color: $blueLight !important;
+    color: $white !important;
+    font-size: 2rem !important;
+    z-index: 15 !important;
+
+    opacity: .75;
+    transition: opacity .075s !important;
+
+    &:hover{
+        opacity: 1;
+    }
+}

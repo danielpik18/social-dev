@@ -6,8 +6,7 @@ import {
     Typography,
     Divider,
     Container,
-    Button,
-    Dialog
+    Button
 } from '@material-ui/core';
 import * as EmailValidator from 'email-validator';
 
@@ -16,7 +15,7 @@ import { fire } from './../../firebase';
 import { AuthContext } from './../../Contexts/AuthContext';
 
 import { Redirect } from 'react-router-dom';
-import ErrorDialog from '../ErrorDialog/ErrorDialog';
+import ErrorDialog from './../Dialogs/ErrorDialog/ErrorDialog';
 
 const Login = () => {
     const [email, setEmail] = useState('');

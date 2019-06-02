@@ -1,0 +1,58 @@
+@import './../../../scss/colors';
+@import './../../../scss/mixins';
+
+.wrapper{
+    position: fixed;
+    bottom: 3rem;
+    right: 3rem;
+    background-color: $white;
+    border: rgba($blueLight, .4) solid 2px;
+
+    width: 20rem;
+    height: 26rem;
+    clip-path: polygon(0% 0%, 100% 0%, 100% 82%, 82% 82%, 82% 100%, 60% 82%, 0% 82%);
+}
+
+.messagesMenu{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border-right: 1px solid $blueLight;
+    background: linear-gradient($white, $whiteDark);
+    height: 22rem;
+
+    &Icon{
+        cursor: pointer;
+        width: 100%;
+        padding: .8rem 0;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        color: $blueLight;
+
+        &:nth-child(1){
+            color: $grey;
+        }
+
+        &:hover{
+            background-color: rgba($blueLight, .3);
+        }
+
+        &:not(:last-child){
+            border-bottom: 1px $greyLight solid;
+
+        }
+    }
+}
+
+.messagesList{
+    width: 100%;
+    height: 100%;
+    position: relative;
+}
+.loader{
+    padding-bottom: 4rem;
+    @include centerDivAbsolute;
+}

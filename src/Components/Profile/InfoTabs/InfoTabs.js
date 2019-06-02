@@ -3,7 +3,8 @@ import {
     AppBar,
     Tabs,
     Tab,
-    Tooltip
+    Tooltip,
+    Slide
 } from '@material-ui/core';
 import * as Ionicons from 'react-icons/io';
 
@@ -12,9 +13,10 @@ import cssColors from './../../../scss/_colors.scss';
 
 import Experiencia from './Experiencia/Experiencia';
 import Estudios from './Estudios/Estudios';
-import Tecnologias from './Tecnologias/Tecnologias';
 import { ProfileContext } from '../ProfileContext';
 import { ExperienciaProvider } from './Experiencia/ExperienciaContext';
+import { EstudiosProvider } from './Estudios/EstudiosContext';
+import TechPicker from '../../TechPicker/TechPicker';
 
 const InfoTabs = () => {
     const [tabValue, setTabValue] = useState(0);
@@ -32,8 +34,12 @@ const InfoTabs = () => {
                     </ExperienciaProvider>
                 )
             case 1:
-                return <Estudios />
-            case 2: return <Tecnologias />
+                return (
+                    <EstudiosProvider>
+                        <Estudios />
+                    </EstudiosProvider>
+                )
+            case 2: return <TechPicker />
         }
     };
 

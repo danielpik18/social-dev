@@ -15,140 +15,148 @@ import { reBase } from './../../../../firebase';
 import { AuthContext } from '../../../../Contexts/AuthContext';
 
 const Experiencia = () => {
-    const [removeExpButtonID, setremoveExpButtonID] = useState(false);
+    const [removeExpButtonID, setRemoveExpButtonID] = useState('');
+    const [showRemoveExpButton, setShowRemoveExpButton] = useState(false);
     const [showRemoveExpDialog, setShowRemoveExpDialog] = useState(false)
 
     const { user, urlUserID } = useContext(ProfileContext);
-    const { setAddExpDialogOpen } = useContext(ExperienciaContext);
+    const { setAddExpDialogOpen, calculateTotalExperienceYears } = useContext(ExperienciaContext);
     const { currentUser } = useContext(AuthContext);
 
     const experienceIDs = user.experience ? Object.keys(user.experience) : [];
     const experience = user.experience ? Object.values(user.experience) : [];
 
     const handleDeleteExp = () => {
-        reBase.remove(`users/${currentUser.uid}/experience/${removeExpButtonID}`,
-            (error) => console.log(error));
+        reBase.remove(`users/${currentUser.uid}/experience/${removeExpButtonID}`
+            , error => console.log(error));
 
+
+        calculateTotalExperienceYears();
         setShowRemoveExpDialog(false);
     };
 
     return (
-        <div className={styles.wrapper}>
-            <div
-                variant='subtitle1'
-                className={styles.wrapperTitle}
-            >
-                Experiencias laborales
+        <Fade in timeout={325}>
+            <div className={styles.wrapper}>
+                <div
+                    variant='subtitle1'
+                    className={styles.wrapperTitle}
+                >
+                    Experiencias laborales
             </div>
 
-            {
-                experience.map((exp, index) => {
-                    const expID = experienceIDs[index]
+                {
+                    experience.map((exp, index) => {
+                        const expID = experienceIDs[index]
 
-                    const startDate = new Date(exp.startDate);
-                    const endDateText = (
-                        exp.endDate !== 'present'
-                            ? `hasta ${exp.endDate.substr(0, 4)}`
-                            : 'sigo trabajando aquí'
-                    );
+                        const startDate = new Date(exp.startDate);
+                        const endDateText = (
+                            exp.endDate !== 'present'
+                                ? `hasta ${exp.endDate.substr(0, 4)}`
+                                : 'sigo trabajando aquí'
+                        );
 
-                    return (
-                        <div
-                            key={index}
-                            className={styles.expWrapper}
-                            onMouseEnter={() => setremoveExpButtonID(expID)}
-                            onMouseLeave={() => setremoveExpButtonID(expID)}
-                        >
+                        return (
                             <div
-                                className={styles.expImage}
-                                style={{
-                                    backgroundImage: `url(${exp.enterpriseImageURL})`,
-                                    ...(
-                                        !exp.enterpriseImageURL &&
-                                        {
-                                            backgroundColor: cssColors.blueLight,
-                                            color: cssColors.greyLight,
-                                            fontSize: '2rem',
-                                            display: 'flex',
-                                            alignItems: 'center',
-                                            justifyContent: 'center'
-                                        }
-                                    )
+                                key={index}
+                                className={styles.expWrapper}
+                                onMouseEnter={() => {
+                                    setRemoveExpButtonID(expID);
+                                    setShowRemoveExpButton(true);
                                 }}
+                                onMouseLeave={() => setShowRemoveExpButton(false)}
                             >
-                                {
-                                    !exp.enterpriseImageURL &&
-                                    <IoMdBusiness />
-                                }
-                            </div>
-                            <div className={styles.expInfo}>
-                                <div><b>{exp.jobTitle}</b>, {`en ${exp.enterpriseName}`}</div>
-                                <div>
-                                    <small>
-                                        {`
+                                <div
+                                    className={styles.expImage}
+                                    style={{
+                                        backgroundImage: `url(${exp.enterpriseImageURL})`,
+                                        ...(
+                                            !exp.enterpriseImageURL &&
+                                            {
+                                                backgroundColor: cssColors.blueLight,
+                                                color: cssColors.greyLight,
+                                                fontSize: '2rem',
+                                                display: 'flex',
+                                                alignItems: 'center',
+                                                justifyContent: 'center'
+                                            }
+                                        )
+                                    }}
+                                >
+                                    {
+                                        !exp.enterpriseImageURL &&
+                                        <IoMdBusiness />
+                                    }
+                                </div>
+                                <div className={styles.expInfo}>
+                                    <div><b>{exp.jobTitle}</b>, {`en ${exp.enterpriseName}`}</div>
+                                    <div>
+                                        <small>
+                                            {`
                                     Desde ${startDate.getFullYear()}, 
                                         ${endDateText}, 
                                     `}
-                                        <span className={styles.expLocation}>
-                                            {exp.location}
-                                        </span>
-                                    </small>
-                                </div>
-                            </div>
-
-                            {
-                                removeExpButtonID === expID &&
-                                <Fade in>
-                                    <div
-                                        className={styles.removeExpButton}
-                                        onClick={() => setShowRemoveExpDialog(true)}
-                                    >
-                                        <IoIosCloseCircleOutline />
+                                            <span className={styles.expLocation}>
+                                                {exp.location}
+                                            </span>
+                                        </small>
                                     </div>
-                                </Fade>
-                            }
-                        </div>
-                    );
-                })
-            }
+                                </div>
 
-            {
-                !user.experience &&
-                <div className={styles.noExpView}>
-                    <Typography variant='caption'>
-                        Aún no has agredado experiencias previas.
+                                {
+                                    (showRemoveExpButton && (removeExpButtonID === expID)) &&
+                                    <Fade in>
+                                        <div
+                                            className={styles.removeExpButton}
+                                            onClick={() => setShowRemoveExpDialog(true)}
+                                        >
+                                            <IoIosCloseCircleOutline />
+                                        </div>
+                                    </Fade>
+                                }
+                            </div>
+                        );
+                    })
+                }
+
+                {
+                    !user.experience &&
+                    <div className={styles.noExpView}>
+                        <Typography variant='caption'>
+                            Aún no has agredado experiencias previas.
                     </Typography>
-                </div>
-            }
+                    </div>
+                }
 
-            {
-                !urlUserID &&
-                <AddItemButton
-                    text='Añadir experiencia laboral'
-                    clicked={() => setAddExpDialogOpen(true)}
+                {
+                    !urlUserID &&
+                    <AddItemButton
+                        text='Añadir experiencia laboral'
+                        clicked={() => setAddExpDialogOpen(true)}
+                    />
+                }
+
+
+                {
+                    //*******/
+                    //DIALOGS
+                    //*******/
+                }
+
+                <AddExpDialogProvider>
+                    <AddExpDialog />
+                </AddExpDialogProvider>
+
+                <ConfirmDeleteDialog
+                    isOpen={showRemoveExpDialog}
+                    close={() => setShowRemoveExpDialog(false)}
+                    confirm={() => handleDeleteExp()}
+                    title='Confirmar eliminación.'
+                    message='¿Estas seguro de querer borrar este artículo?'
                 />
-            }
 
-
-            {
-                //*******/
-                //DIALOGS
-                //*******/
-            }
-
-            <AddExpDialogProvider>
-                <AddExpDialog />
-            </AddExpDialogProvider>
-
-            <ConfirmDeleteDialog
-                isOpen={showRemoveExpDialog}
-                close={() => setShowRemoveExpDialog(false)}
-                confirm={() => handleDeleteExp()}
-                title='Confirmar eliminación.'
-                message='¿Estas seguro de querer borrar este artículo?'
-            />
-
-        </div>
+            </div>
+        </Fade>
     );
 }
 

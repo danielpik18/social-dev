@@ -3,6 +3,8 @@ import React, { useState } from 'react';
 const AddExpDialogContext = React.createContext();
 
 const AddExpDialogProvider = (props) => {
+    const [activeStep, setActiveStep] = useState(0);
+
     const [enterpriseName, setEnterpriseName] = useState('');
     const [startDate, setStartDate] = useState('');
     const [endDate, setEndDate] = useState('');
@@ -16,9 +18,26 @@ const AddExpDialogProvider = (props) => {
         message: ''
     });
 
+    const resetState = () => {
+        setActiveStep(0);
+        setEnterpriseName('');
+        setStartDate('');
+        setEndDate('');
+        setLocation('');
+        setJobTitle('');
+        setEnterpriseImageURL('');
+        setStillWorkingHere(false);
+        setErrorDialog({
+            open: false,
+            message: ''
+        })
+    };
+
     return (
         <AddExpDialogContext.Provider
             value={{
+                activeStep,
+                setActiveStep,
                 enterpriseName,
                 setEnterpriseName,
                 jobTitle,
@@ -36,7 +55,9 @@ const AddExpDialogProvider = (props) => {
                 setStillWorkingHere,
 
                 errorDialog,
-                setErrorDialog
+                setErrorDialog,
+
+                resetState
             }}
         >
             {props.children}

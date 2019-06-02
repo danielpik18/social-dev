@@ -7,7 +7,7 @@ import StepThree from './Steps/StepThree';
 import StepFour from './Steps/StepFour';
 import StepFive from './Steps/StepFive';
 
-import ErrorDialog from './../../../../ErrorDialog/ErrorDialog';
+import ErrorDialog from './../../../../Dialogs/ErrorDialog/ErrorDialog';
 
 import {
     IoMdArrowDropleft,
@@ -18,11 +18,15 @@ import { AddExpDialogContext } from './AddExpDialogContext';
 import { ExperienciaContext } from '../ExperienciaContext';
 
 const AddExpDialog = () => {
-    const [activeStep, setActiveStep] = useState(0);
     const [stepDirection, setStepDirection] = useState('right');
 
     const { addExpDialogOpen, setAddExpDialogOpen } = useContext(ExperienciaContext);
-    const { errorDialog, setErrorDialog } = useContext(AddExpDialogContext);
+    const {
+        errorDialog,
+        setErrorDialog,
+        activeStep,
+        setActiveStep
+    } = useContext(AddExpDialogContext);
 
     const handleStepChange = (direction) => {
         if (direction === 'forward') {

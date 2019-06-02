@@ -17,7 +17,7 @@ import * as EmailValidator from 'email-validator';
 import { reBase } from './../../firebase';
 
 import firebase from "firebase";
-import ErrorDialog from '../ErrorDialog/ErrorDialog';
+import ErrorDialog from './../Dialogs/ErrorDialog/ErrorDialog';
 
 const Register = () => {
     const [name, setName] = useState('');
@@ -119,9 +119,9 @@ const Register = () => {
                         <div className={styles.titleWrapper}>
                             <div className={styles.socialDevLogo}></div>
 
-                            <Typography variant='h5' color='inherit'>
-                                La red social para desarrolladores
-                            </Typography>
+                            <span className={styles.socialDevSlogan}>
+                                La plataforma social para desarrolladores y reclutadores.
+                            </span>
                         </div>
                     </Grid>
                     <Grid item xs={5}>
@@ -146,6 +146,7 @@ const Register = () => {
                                             {block.icon}
 
                                             <TextField
+                                                variant='filled'
                                                 name={block.name}
                                                 fullWidth
                                                 label={block.label}

@@ -7,30 +7,40 @@ import Layout from './hoc/Layout/Layout';
 import Login from './Components/Login/Login';
 import SearchView from './Components/SearchView/SearchView';
 
-import { AuthProvider, AuthContext } from './Contexts/AuthContext';
+import { AuthProvider } from './Contexts/AuthContext';
 import PrivateRoute from './hoc/PrivateRoute';
+import { SearchFiltersProvider } from './Components/Navigation/SearchBar/SearchFilters/SearchFiltersContext';
+import { SearchViewProvider } from './Components/SearchView/SearchViewContext';
 
 const App = () => {
   return (
     <AuthProvider>
-      <Router basename={process.env.PUBLIC_URL}>
-        <Layout>
-          <Switch>
-            <Route component={Home} exact path='/' />
+      <SearchFiltersProvider>
+        <SearchViewProvider>
+          <Router basename={process.env.PUBLIC_URL}>
+            <Layout>
+              <Switch>
+                <Route component={Home} exact path='/' />
 
-            <PrivateRoute
-              path='/profile'
-              component={Profile}
-            />
+                <PrivateRoute
+                  exact
+                  path='/profile/:id?'
+                  component={Profile}
+                />
 
-            <Route exact path='/profile:id' component={Profile} />
+                <Route path='/login' component={Login} />
 
-            <Route path='/login' component={Login} />
+                <Route
+                  exact
+                  path='/search/:techTags?/:yearsOfExperience?'
+                  component={SearchView}
+                />
 
-            <Route path='/search' component={SearchView} />
-          </Switch>
-        </Layout>
-      </Router>
+              </Switch>
+            </Layout>
+          </Router>
+        </SearchViewProvider>
+      </SearchFiltersProvider>
     </AuthProvider>
   );
 }

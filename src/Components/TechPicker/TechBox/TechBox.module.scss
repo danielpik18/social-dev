@@ -1,0 +1,76 @@
+@import './../../../scss/colors';
+
+.techCategory{
+    &Wrapper{
+        background-color: $white;
+        text-align: center;
+        margin: 1rem;
+    }
+
+    &Title{
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: $grey;
+
+        & > *{
+            &:not(:last-child){
+                color: $greyDark;
+                margin-right: .4rem;
+            }
+        }
+    }
+}
+
+.techCheck{
+    &Wrapper{
+        position: relative;
+        display: flex;
+        margin: 0 1rem;
+        cursor: pointer;
+        
+        &:hover{
+            background-color: rgba($whiteLight, .25);
+        }
+
+        & > *{
+            &:first-child{
+                margin-right: 1rem;
+            }
+        }
+    }
+}
+
+
+
+.list{
+    padding: 1rem 0;
+}
+
+.generalPurpose{
+    border: solid $grey 2px;
+}
+
+.basic{
+    border: solid $greenLight 2px;
+}
+
+.frontEnd{
+    border: solid $yellowLight 2px;
+}
+
+.backEnd{
+    border: solid $blueLight 2px;
+}
+
+.backEndFrameworks{
+    border: solid $redLight 2px;
+}
+
+.frontEndFrameworks{
+    border: solid $blueLight 2px;
+}
+
+.other{
+    border: solid $greyLight 2px;
+}

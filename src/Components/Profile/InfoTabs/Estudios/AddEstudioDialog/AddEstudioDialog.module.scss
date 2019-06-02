@@ -1,0 +1,20 @@
+@import './../../../../../scss/colors';
+
+.wrapper{
+    width: 28rem;
+    padding: 2rem;
+}
+
+.steppers{
+    margin-top: 2rem;
+
+    &Nav{
+        display: flex;
+        align-items: flex-end;
+
+        &Icon{
+            font-size: 1.4rem;
+            color: $greyDark;
+        }
+    }
+}
