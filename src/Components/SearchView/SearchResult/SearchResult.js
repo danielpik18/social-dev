@@ -7,7 +7,7 @@ import cssColors from './../../../scss/_colors.scss';
 import { Link } from 'react-router-dom';
 import TechTags from '../../TechTags/TechTags';
 
-const SearchResult = ({ user, slideTimeout }) => {
+const SearchResult = ({ user, slideTimeout, smallVersion }) => {
     return (
         <Link
             to={`/profile/${user.id}`}
@@ -25,6 +25,8 @@ const SearchResult = ({ user, slideTimeout }) => {
                         <div
                             className={styles.userImage}
                             style={{
+                                width: smallVersion ? '3rem' : '6rem',
+                                height: smallVersion ? '3rem' : '6rem',
                                 backgroundImage: `url(${user.profileImageURL})`
                             }}
                         >
@@ -48,33 +50,39 @@ const SearchResult = ({ user, slideTimeout }) => {
                                 isSelectable={false}
                             />
 
-                            <TechTags
-                                disabled
-                                tech={user.tech}
-                                limit={6}
-                            />
+                            {
+                                !smallVersion &&
+                                <TechTags
+                                    disabled
+                                    tech={user.tech}
+                                    limit={6}
+                                />
+                            }
                         </div>
                     </div>
 
-                    <div className={styles.rightSide}>
-                        <div className={styles.rightSideInfo}>
-                            <small className={styles.rightSideSubtitle}>
-                                Años totales de experiencia:
-                    </small>
-                            <span className={styles.rightSideValue}>
-                                {user.totalExperienceYears ? user.totalExperienceYears : '--'}
-                            </span>
-                        </div>
+                    {
+                        !smallVersion &&
+                        <div className={styles.rightSide}>
+                            <div className={styles.rightSideInfo}>
+                                <small className={styles.rightSideSubtitle}>
+                                    Años totales de experiencia:
+                            </small>
+                                <span className={styles.rightSideValue}>
+                                    {user.totalExperienceYears ? user.totalExperienceYears : '--'}
+                                </span>
+                            </div>
 
-                        <div className={styles.rightSideInfo}>
-                            <small className={styles.rightSideSubtitle}>
-                                Proyectos publicados:
-                    </small>
-                            <span className={styles.rightSideValue}>
-                                {user.publishedProjects ? Object.values(user.publishedProjects).length : '--'}
-                            </span>
+                            <div className={styles.rightSideInfo}>
+                                <small className={styles.rightSideSubtitle}>
+                                    Proyectos publicados:
+                                </small>
+                                <span className={styles.rightSideValue}>
+                                    {user.publishedProjects ? Object.values(user.publishedProjects).length : '--'}
+                                </span>
+                            </div>
                         </div>
-                    </div>
+                    }
                 </div>
             </Slide>
         </Link>

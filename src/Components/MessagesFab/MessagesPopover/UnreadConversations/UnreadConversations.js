@@ -8,41 +8,26 @@ import ConversationCircle from './ConversationCircle/ConversationCircle';
 import { MessagesPopoverContext } from '../MessagesPopoverContext';
 
 const UnreadConversations = () => {
-    const { currentUser } = useContext(AuthContext);
+    const { currentUserData } = useContext(AuthContext);
     const {
-        userConversations,
-        setUserConversations,
         conversationsUserData,
         setConversationsUserData
     } = useContext(UnreadConversationsContext);
-    const { sortUnreadConversationsBy, setSortUnreadConversationsBy } = useContext(MessagesPopoverContext);
+    const { sortUnreadConversationsBy, setDevConversationsUnreadMessages, setRecConversationsUnreadMessages } = useContext(MessagesPopoverContext);
 
     const [conversationWithDevs, setConversationWithDevs] = useState([]);
     const [conversationWithRecs, setConversationWithRecs] = useState([]);
     const [renderedConversations, setRenderedConversations] = useState(null);
 
-    const conversationsKeys = userConversations && Object.keys(userConversations);
+    let conversationsKeys;
+    if (currentUserData) {
+        conversationsKeys = currentUserData.conversations && Object.keys(currentUserData.conversations);
+    }
 
     useEffect(() => {
         /* eslint-disable */
 
-
-        const bindRef = reBase.bindToState(`users/${currentUser.uid}/conversations`, {
-            context: {
-                setState: ({ userConversations }) => setUserConversations({ ...userConversations }),
-                state: { userConversations }
-            },
-            state: 'userConversations'
-        });
-
-        return () => reBase.removeBinding(bindRef);
-    }, []);
-
-
-    useEffect(() => {
-        /* eslint-disable */
-
-        if (userConversations && Object.values(userConversations).length > 0) {
+        if (currentUserData.conversations && Object.values(currentUserData.conversations).length > 0) {
             reBase.fetch('users', {})
                 .then(users => {
                     const convsUserData = {};
@@ -57,28 +42,32 @@ const UnreadConversations = () => {
                     setConversationsUserData(convsUserData);
                 });
         }
-    }, [userConversations]);
+    }, []);
 
     useEffect(() => {
         /* eslint-disable */
 
         if (conversationsUserData) {
-            const convsUserDataKeys = Object.keys(conversationsUserData);
+            const conversationsKeys = Object.keys(currentUserData.conversations);
             const devConversations = [];
             const recConversations = [];
 
-            convsUserDataKeys.forEach(key => {
-                if (conversationsUserData[key].role === 'Desarrollador') {
-                    devConversations.push({
-                        ...userConversations[key],
-                        userData: conversationsUserData[key]
-                    });
-                }
-                else {
-                    recConversations.push({
-                        ...userConversations[key],
-                        userData: conversationsUserData[key]
-                    });
+            conversationsKeys.forEach(key => {
+                if (conversationsUserData[key]) {
+                    if (conversationsUserData[key].role === 'Desarrollador') {
+                        devConversations.push({
+                            id: key,
+                            ...currentUserData.conversations[key],
+                            userData: conversationsUserData[key]
+                        });
+                    }
+                    else {
+                        recConversations.push({
+                            id: key,
+                            ...currentUserData.conversations[key],
+                            userData: conversationsUserData[key]
+                        });
+                    }
                 }
             });
 
@@ -90,6 +79,33 @@ const UnreadConversations = () => {
     useEffect(() => {
         if (conversationsUserData) {
             if (conversationWithDevs && conversationWithRecs) {
+
+                //this could be improved with a for loop with a break intstead.
+                conversationWithDevs.forEach(devConv => {
+                    Object.values(devConv.messages).forEach(message => {
+                        if (message.hasOwnProperty('read') && message.read === false) {
+                            setDevConversationsUnreadMessages(true);
+                        }
+                        else {
+                            setDevConversationsUnreadMessages(false);
+                        }
+                    })
+                });
+
+                //this could be improved with a for loop with a break intstead.
+                conversationWithRecs.forEach(recConv => {
+                    Object.values(recConv.messages).forEach(message => {
+                        if (message.hasOwnProperty('read') && message.read === false) {
+                            setRecConversationsUnreadMessages(true);
+                        }
+                        else {
+                            setRecConversationsUnreadMessages(false);
+                        }
+                    })
+                });
+
+
+
                 if (sortUnreadConversationsBy === 'devs') {
                     setRenderedConversations(conversationWithDevs);
                 }
@@ -111,10 +127,9 @@ const UnreadConversations = () => {
                 ) ? (
                         (renderedConversations.length > 0)
                             ? (
-                                conversationsKeys.map((key, index) => {
-                                    const conversation = userConversations[key];
+                                renderedConversations.map((conversation, index) => {
 
-                                    if (conversationsUserData[key] && conversation.messages) {
+                                    if (conversation.messages) {
                                         const messagesKeys = Object.keys(conversation.messages);
                                         const unreadMessages = [];
 
@@ -133,8 +148,8 @@ const UnreadConversations = () => {
                                             <ConversationCircle
                                                 key={index}
                                                 unreadMessagesNumber={unreadMessages.length}
-                                                conversationID={key}
-                                                userData={conversationsUserData[key]}
+                                                conversationID={conversation.id}
+                                                userData={conversation.userData}
                                             />
                                         )
                                     }

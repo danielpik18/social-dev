@@ -74,8 +74,8 @@ const InfoTabs = () => {
         },
         {
             display: (!urlUserID && (user.role === 'Reclutador')),
-            title: 'Desarrolladores guardados',
-            icon: 'IoIosConstruct'
+            title: 'Desarrolladores favoritos',
+            icon: 'IoIosHeart'
         }
     ];
 
@@ -85,7 +85,7 @@ const InfoTabs = () => {
                 position="static"
                 style={{
                     backgroundColor: user.role === 'Desarrollador'
-                        ? cssColors.blueDark : cssColors.purpleDark
+                        ? cssColors.blueDark : cssColors.greyDark
                 }}
             >
                 <Tabs

@@ -3,7 +3,7 @@ import styles from './UserHeader.module.scss';
 import ReactLoading from 'react-loading';
 import { Typography, Fab, Tooltip } from '@material-ui/core';
 import { FaRocketchat } from 'react-icons/fa';
-import { TiHeartOutline } from 'react-icons/ti';
+import { TiHeartOutline, TiHeart } from 'react-icons/ti';
 
 import SocialMediaButtons from './SocialMediaButtons/SocialMediaButtons';
 import UserRatings from './UserRatings/UserRatings';
@@ -28,16 +28,28 @@ const UserHeader = () => {
     const [userImageLoading, setUserImageLoading] = useState(false);
 
     const handleChatWithUser = () => {
-        //console.log('urluserID:', urlUserID);
         setCurrentConversationID(urlUserID);
         setPopoverOpen(true);
-    }
+    };
 
     const handleImageUpload = (event) => {
         if (event.target.files[0]) {
             setUserImage(event.target.files[0]);
         }
-    }
+    };
+
+    const handleAddUserToFavorites = () => {
+        if (currentUserData.favoriteDevs && currentUserData.favoriteDevs[urlUserID]) {
+            reBase.remove(`users/${currentUser.uid}/favoriteDevs/${urlUserID}`);
+
+        }
+        else {
+            reBase.post(`users/${currentUser.uid}/favoriteDevs/${urlUserID}`, {
+                data: { ...user }
+            });
+        }
+
+    };
 
     useEffect(() => {
         /* eslint-disable */
@@ -155,10 +167,31 @@ const UserHeader = () => {
 
             {
                 urlUserID &&
-                (currentUserData.role === 'Reclutador') &&
-                <div className={styles.favoriteUser}>
-                    <TiHeartOutline />
-                </div>
+                (currentUserData.role === 'Reclutador') && (
+                    (
+                        !currentUserData.favoriteDevs ||
+                        !currentUserData.favoriteDevs[urlUserID]
+                    ) ? (
+                            <Tooltip
+                                className={styles.favoriteUser}
+                                title='Agregar a desarrolladores favoritos'
+                            >
+                                <div onClick={() => handleAddUserToFavorites()}>
+                                    <TiHeartOutline />
+                                </div>
+                            </Tooltip>
+                        ) : (
+                            <Tooltip
+                                className={styles.favoriteUser}
+                                title='Eliminar de desarrolladores favoritos'
+                            >
+                                <div onClick={() => handleAddUserToFavorites()}>
+                                    <TiHeart />
+                                </div>
+                            </Tooltip>
+                        )
+                )
+
             }
         </div>
     );

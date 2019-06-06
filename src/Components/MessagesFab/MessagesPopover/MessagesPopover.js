@@ -1,7 +1,8 @@
 import React, { useContext, useEffect } from 'react';
 import styles from './MessagesPopover.module.scss';
-import { Grid, Tooltip, Badge, Zoom } from '@material-ui/core';
+import { Grid, Tooltip, Zoom } from '@material-ui/core';
 import { FaUserAlt, FaUserTie } from 'react-icons/fa';
+import { MdChat } from 'react-icons/md';
 import { MessagesPopoverContext } from './MessagesPopoverContext';
 import ConversationView from './ConversationView/ConversationView';
 import UnreadConversations from './UnreadConversations/UnreadConversations';
@@ -11,7 +12,9 @@ const MessagesPopover = () => {
     const {
         currentView,
         setCurrentView,
-        setSortUnreadConversationsBy
+        setSortUnreadConversationsBy,
+        devConversationsUnreadMessages,
+        recConversationsUnreadMessages
     } = useContext(MessagesPopoverContext);
 
     useEffect(() => {
@@ -20,8 +23,6 @@ const MessagesPopover = () => {
             setCurrentView('conversationsList');
         }
     }, []);
-
-    //console.log(sortUnreadConversationsBy);
 
     return (
         <Zoom in>
@@ -37,14 +38,11 @@ const MessagesPopover = () => {
                                         setCurrentView('conversationsList')
                                     }}
                                 >
-                                    <Badge
-                                        color='secondary'
-                                        variant='dot'
-                                        badgeContent={1}
-                                        className={styles.messagesMenuBadge}
-                                    >
-                                        <FaUserAlt />
-                                    </Badge>
+                                    {
+                                        devConversationsUnreadMessages &&
+                                        <MdChat className={styles.messagesMenuIconBadge} />
+                                    }
+                                    <FaUserAlt />
                                 </div>
                             </Tooltip>
                             <Tooltip title='Mensajes de reclutadores'>
@@ -55,14 +53,11 @@ const MessagesPopover = () => {
                                         setCurrentView('conversationsList');
                                     }}
                                 >
-                                    <Badge
-                                        color='secondary'
-                                        variant='dot'
-                                        badgeContent={1}
-                                        className={styles.messagesMenuBadge}
-                                    >
-                                        <FaUserTie />
-                                    </Badge>
+                                    {
+                                        recConversationsUnreadMessages &&
+                                        <MdChat className={styles.messagesMenuIconBadge} />
+                                    }
+                                    <FaUserTie />
                                 </div>
                             </Tooltip>
                         </div>

@@ -93,7 +93,6 @@ const ConversationView = () => {
                         }
                     });
 
-
                     setMessage('');
                     settextFieldRows(0);
                 }

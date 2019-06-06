@@ -18,27 +18,24 @@ const UserRatings = () => {
         ratings.length : 0;
 
     useEffect(() => {
-        reBase.fetch(`users/${urlUserID}`, {})
-            .then(user => {
-                if (user && user.ratings) {
-                    const ratings = Object.values(user.ratings);
-                    let ratio = 0.0;
+        if ((user && user.ratings) && urlUserID) {
+            const ratings = Object.values(user.ratings);
+            let ratio = 0.0;
 
-                    if (ratings && ratings.length > 0) {
-                        const ratingsSum = ratings.reduce((a, b) => a + b);
+            if (ratings && ratings.length > 0) {
+                const ratingsSum = ratings.reduce((a, b) => a + b);
 
-                        ratio = ratingsSum / ratings.length;
-                    }
-                    else if (ratings && ratings.length === 0) {
-                        ratio = ratings[0];
-                    }
+                ratio = ratingsSum / ratings.length;
+            }
+            else if (ratings && ratings.length === 0) {
+                ratio = ratings[0];
+            }
 
-                    reBase.post(`users/${urlUserID}/ratingRatio`, {
-                        data: ratio
-                    })
-                }
+            reBase.post(`users/${urlUserID}/ratingRatio`, {
+                data: ratio
             });
-    });
+        }
+    }, [user.ratings]);
 
     const addRating = (newRating) => {
         const userDoingRatingID = (

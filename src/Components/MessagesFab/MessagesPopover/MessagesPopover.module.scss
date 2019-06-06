@@ -23,15 +23,23 @@
     height: 24rem;
 
     &Icon{
+        padding: .6rem 0;
         cursor: pointer;
-        width: 100%;
-        padding: .8rem 0;
+        color: $blueLight;
 
+        width: 100%;
+        position: relative;
         display: flex;
         align-items: center;
         justify-content: center;
 
-        color: $blueLight;
+        &Badge{
+            position: absolute;
+            top: .1rem;
+            right: .1rem;
+            font-size: .75rem;
+            color: $redLight;
+        }
 
         &:nth-child(1){
             color: $grey;

@@ -1,0 +1,17 @@
+@import './../../../../scss/colors';
+
+.savedDevs{
+    &Title{
+        color: $greyDark;
+        font-size: 1.4rem;
+        text-transform: uppercase;
+        padding: 1.6rem 0;
+        border-bottom: solid 1px $white;
+        text-align: center;
+    }
+
+    &List{
+        overflow-y: auto;
+        height: 30rem;
+    }
+}
