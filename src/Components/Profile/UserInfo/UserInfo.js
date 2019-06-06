@@ -11,8 +11,7 @@ import styles from './UserInfo.module.scss';
 import { TiEdit } from 'react-icons/ti';
 import {
     IoMdCreate,
-    IoIosCheckmark,
-    IoIosAlbums
+    IoIosCheckmark
 } from 'react-icons/io';
 import { ProfileContext } from '../ProfileContext';
 import { UserInfoContext } from './UserInfoContext';
@@ -37,6 +36,12 @@ const UserInfo = () => {
     const [bioEdited, setBioEdited] = useState(user.bio && user.bio);
     const [nameEdited, setNameEdited] = useState(user.name);
     const [lastnameEdited, setLastnameEdited] = useState(user.lastname);
+
+    const resetEditedData = () => {
+        setBioEdited(user.bio && user.bio);
+        setNameEdited(user.name);
+        setLastnameEdited(user.lastname);
+    };
 
     const infoFields = [
         (
@@ -110,18 +115,30 @@ const UserInfo = () => {
     ];
 
     const confirmEdit = () => {
-        const editedUser = {
-            ...user,
-            name: nameEdited,
-            lastname: lastnameEdited,
-            bio: bioEdited
-        };
+        const editedUser = {};
 
-        reBase.post(`users/${currentUser.uid}`, {
-            data: editedUser
-        });
+        if (!nameEdited) {
+            console.log('error - cant leave name field empty');
+        }
+        else if (!lastnameEdited) {
+            console.log('error - cant leave last name field empty');
+        }
+        else {
+            editedUser.name = nameEdited;
+            editedUser.lastname = lastnameEdited;
 
-        setEditMode(false);
+            if (bioEdited) {
+                editedUser.bio = bioEdited;
+            }
+
+            reBase.update(`users/${currentUser.uid}`, {
+                data: editedUser
+            });
+
+            setEditMode(false);
+        }
+
+        resetEditedData();
     }
 
     return (
@@ -155,7 +172,7 @@ const UserInfo = () => {
 
                 {
                     !editMode &&
-                    user.bio && (
+                    (user.bio && (user.bio.length > 300)) && (
                         bioReadMore
                             ?
                             <span
@@ -198,35 +215,33 @@ const UserInfo = () => {
                     <div className={styles.infoFieldsWrapper}>
                         {
                             editableInfoFields.map(field => {
-                                if (field.display) {
-                                    if (infoEditable && editMode) {
-                                        return (
-                                            <div
-                                                className={styles.infoField}
-                                                key={field.name}
-                                            >
-                                                <span>
-                                                    {`${field.name}:`}
-                                                </span>
-                                                {field.input}
-                                            </div>
-                                        )
-                                    }
-                                    else {
-                                        return (
-                                            <div
-                                                className={styles.infoField}
-                                                key={field.name}
-                                            >
-                                                <span>
-                                                    {`${field.name}:`}
-                                                </span>
-                                                <span style={{ color: 'grey' }}>
-                                                    <small>{field.value}</small>
-                                                </span>
-                                            </div>
-                                        )
-                                    }
+                                if (field.display && (infoEditable && editMode)) {
+                                    return (
+                                        <div
+                                            className={styles.infoField}
+                                            key={field.name}
+                                        >
+                                            <span>
+                                                {`${field.name}:`}
+                                            </span>
+                                            {field.input}
+                                        </div>
+                                    )
+                                }
+                                else {
+                                    return (
+                                        <div
+                                            className={styles.infoField}
+                                            key={field.name}
+                                        >
+                                            <span>
+                                                {`${field.name}:`}
+                                            </span>
+                                            <span style={{ color: 'grey' }}>
+                                                <small>{field.value}</small>
+                                            </span>
+                                        </div>
+                                    )
                                 }
                             })
                         }
@@ -268,7 +283,10 @@ const UserInfo = () => {
                     <Fab
                         size='small'
                         className={styles.editButton}
-                        onClick={() => setEditMode(true)}
+                        onClick={() => {
+                            resetEditedData();
+                            setEditMode(true);
+                        }}
                     >
                         <IoMdCreate />
                     </Fab>

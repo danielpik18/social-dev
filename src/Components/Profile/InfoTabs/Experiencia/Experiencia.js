@@ -123,7 +123,7 @@ const Experiencia = () => {
                     !user.experience &&
                     <div className={styles.noExpView}>
                         <Typography variant='caption'>
-                            Aún no has agredado experiencias previas.
+                            No se han agregado experiencias previas.
                     </Typography>
                     </div>
                 }

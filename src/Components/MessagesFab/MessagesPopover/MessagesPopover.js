@@ -1,30 +1,42 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useEffect } from 'react';
 import styles from './MessagesPopover.module.scss';
-import { Grid, Tooltip, Badge, Fade, Zoom } from '@material-ui/core';
+import { Grid, Tooltip, Badge, Zoom } from '@material-ui/core';
 import { FaUserAlt, FaUserTie } from 'react-icons/fa';
-import { AuthContext } from '../../../Contexts/AuthContext';
 import { MessagesPopoverContext } from './MessagesPopoverContext';
-
-import ReactLoading from 'react-loading';
-import ConversationItem from './UnreadConversations/UnreadConversations';
 import ConversationView from './ConversationView/ConversationView';
 import UnreadConversations from './UnreadConversations/UnreadConversations';
+import { UnreadConversationsProvider } from './UnreadConversations/UnreadConversationsContext';
 
 const MessagesPopover = () => {
-    const { currentUser } = useContext(AuthContext);
     const {
         currentView,
-        userConversationsFormatted
+        setCurrentView,
+        setSortUnreadConversationsBy
     } = useContext(MessagesPopoverContext);
+
+    useEffect(() => {
+        return () => {
+            /* eslint-disable */
+            setCurrentView('conversationsList');
+        }
+    }, []);
+
+    //console.log(sortUnreadConversationsBy);
 
     return (
         <Zoom in>
             <div className={styles.wrapper}>
                 <Grid container>
-                    <Grid item xs={2}>
+                    <Grid item xs={1}>
                         <div className={styles.messagesMenu}>
                             <Tooltip title='Mensajes de desarrolladores'>
-                                <div className={styles.messagesMenuIcon}>
+                                <div
+                                    className={styles.messagesMenuIcon}
+                                    onClick={() => {
+                                        setSortUnreadConversationsBy('devs')
+                                        setCurrentView('conversationsList')
+                                    }}
+                                >
                                     <Badge
                                         color='secondary'
                                         variant='dot'
@@ -36,7 +48,13 @@ const MessagesPopover = () => {
                                 </div>
                             </Tooltip>
                             <Tooltip title='Mensajes de reclutadores'>
-                                <div className={styles.messagesMenuIcon}>
+                                <div
+                                    className={styles.messagesMenuIcon}
+                                    onClick={() => {
+                                        setSortUnreadConversationsBy('recs');
+                                        setCurrentView('conversationsList');
+                                    }}
+                                >
                                     <Badge
                                         color='secondary'
                                         variant='dot'
@@ -50,21 +68,21 @@ const MessagesPopover = () => {
                         </div>
                     </Grid>
 
-                    <Grid item xs={10}>
+                    <Grid item xs={11}>
                         <div className={styles.messagesList}>
-                            {
-                                <div>
-                                    {
+                            <UnreadConversationsProvider>
+                                {
+                                    currentView === 'conversationsList' && (
+                                        <UnreadConversations />
+                                    )
+                                }
+                            </UnreadConversationsProvider>
 
-                                        currentView === 'conversationsList'
-                                            ? (
-                                                <UnreadConversations />
-                                            )
-                                            : (
-                                                <ConversationView />
-                                            )
-                                    }
-                                </div>
+                            {
+                                currentView === 'conversation'
+                                && (
+                                    <ConversationView />
+                                )
                             }
                         </div>
                     </Grid>

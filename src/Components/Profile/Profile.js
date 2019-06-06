@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useEffect, useContext } from 'react';
 import styles from './Profile.module.scss';
 import { Container } from '@material-ui/core';
 import ReactLoading from 'react-loading';
@@ -15,31 +15,39 @@ import { UserInfoProvider } from './UserInfo/UserInfoContext';
 
 const Profile = (props) => {
     const { currentUser } = useContext(AuthContext);
-    const { user, setUser, setUrlUserID } = useContext(ProfileContext);
+    const { user, setUser, urlUserId, setUrlUserID } = useContext(ProfileContext);
 
-    const profileUrlId = props.match.params.id;
+    const IdParamOnUrl = props.match.params.id;
 
     useEffect(() => {
+        /* eslint-disable */
         let userID;
 
-        if (profileUrlId) {
-            userID = profileUrlId;
-            setUrlUserID(profileUrlId);
+        if (IdParamOnUrl) {
+            userID = IdParamOnUrl;
+            setUrlUserID(IdParamOnUrl);
         }
         else {
-            setUrlUserID(null)
             userID = currentUser && currentUser.uid;
+            setUrlUserID(null);
         }
 
-        //Fetch user's data
-        reBase.syncState(`users/${userID}`, {
+        const bindRef = reBase.bindToState(`users/${userID}`, {
             context: {
                 setState: ({ user }) => setUser({ ...user }),
                 state: { user }
             },
             state: 'user'
-        })
-    }, [props.match])
+        });
+
+        return () => {
+            reBase.removeBinding(bindRef);
+        }
+    }, [IdParamOnUrl]);
+
+    useEffect(() => {
+        //console.log(urlUserId);
+    }, [urlUserId]);
 
 
     return !user ?

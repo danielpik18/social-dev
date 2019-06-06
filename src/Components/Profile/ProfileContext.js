@@ -1,12 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 
 const ProfileContext = React.createContext();
 
 const ProfileProvider = (props) => {
-    const [user, setUser] = useState(null);
+    const [user, setUser] = useState();
     const [urlUserID, setUrlUserID] = useState('');
-
-    //console.log(user);
 
     return (
         <ProfileContext.Provider

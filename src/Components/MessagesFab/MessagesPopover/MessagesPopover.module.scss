@@ -8,9 +8,10 @@
     background-color: $white;
     border: rgba($blueLight, .4) solid 2px;
 
-    width: 20rem;
-    height: 26rem;
-    clip-path: polygon(0% 0%, 100% 0%, 100% 82%, 82% 82%, 82% 100%, 60% 82%, 0% 82%);
+    width: 24rem;
+    height: 24rem;
+    
+    //clip-path: polygon(0% 0%, 100% 0%, 100% 84%, 84% 84%, 84% 100%, 60% 84%, 0% 84%);
 }
 
 .messagesMenu{
@@ -19,7 +20,7 @@
     align-items: center;
     border-right: 1px solid $blueLight;
     background: linear-gradient($white, $whiteDark);
-    height: 22rem;
+    height: 24rem;
 
     &Icon{
         cursor: pointer;
@@ -51,8 +52,4 @@
     width: 100%;
     height: 100%;
     position: relative;
-}
-.loader{
-    padding-bottom: 4rem;
-    @include centerDivAbsolute;
 }

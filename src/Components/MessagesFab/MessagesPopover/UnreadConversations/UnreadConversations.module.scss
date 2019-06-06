@@ -1,0 +1,20 @@
+@import './../../../../scss/mixins';
+@import './../../../../scss/colors';
+
+.conversationsWrapper{
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.noConversations{
+    font-size: .85rem;
+    color: $grey;
+    width: 100%;
+    text-align: center;
+    padding-top: 1.4rem;
+}
+
+.loader{
+    padding-bottom: 4rem;
+    @include centerDivAbsolute;
+}

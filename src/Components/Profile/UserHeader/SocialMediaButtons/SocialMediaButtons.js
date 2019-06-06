@@ -72,6 +72,7 @@ const SocialMediaButtons = () => {
                             className={styles.socialMediaIcon}
                             href={link.url}
                             target='_blank'
+                            rel='noopener noreferrer'
                         >
                             {link.icon}
                         </a>

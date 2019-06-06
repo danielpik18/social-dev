@@ -3,6 +3,7 @@ import styles from './UserHeader.module.scss';
 import ReactLoading from 'react-loading';
 import { Typography, Fab, Tooltip } from '@material-ui/core';
 import { FaRocketchat } from 'react-icons/fa';
+import { TiHeartOutline } from 'react-icons/ti';
 
 import SocialMediaButtons from './SocialMediaButtons/SocialMediaButtons';
 import UserRatings from './UserRatings/UserRatings';
@@ -10,23 +11,26 @@ import { ProfileContext } from '../ProfileContext';
 import { reBase, storage } from './../../../firebase';
 import { AuthContext } from '../../../Contexts/AuthContext';
 import { MessagesFabContext } from '../../MessagesFab/MessagesFabContext';
+import { ConversationViewContext } from '../../MessagesFab/MessagesPopover/ConversationView/ConversationViewContext';
 
 const UserHeader = () => {
-    const { currentUser } = useContext(AuthContext);
+    const { currentUser, currentUserData } = useContext(AuthContext);
     const {
         user,
         urlUserID
     } = useContext(ProfileContext);
 
     const { setPopoverOpen } = useContext(MessagesFabContext);
+    const { setCurrentConversationID } = useContext(ConversationViewContext);
 
     const [refs, setRefs] = useState(null);
     const [userImage, setUserImage] = useState(null);
     const [userImageLoading, setUserImageLoading] = useState(false);
 
     const handleChatWithUser = () => {
+        //console.log('urluserID:', urlUserID);
+        setCurrentConversationID(urlUserID);
         setPopoverOpen(true);
-        console.log(urlUserID);
     }
 
     const handleImageUpload = (event) => {
@@ -36,10 +40,12 @@ const UserHeader = () => {
     }
 
     useEffect(() => {
+        /* eslint-disable */
+
         const acceptedFileTypes = ['image/png', 'image/jpeg', 'image/gif'];
 
         if (userImage) {
-            console.log(userImage);
+            //console.log(userImage);
 
             if (acceptedFileTypes.includes(userImage.type)) {
                 if (userImage.size <= 350000) {
@@ -85,11 +91,7 @@ const UserHeader = () => {
                             ${!urlUserID && styles.userImageHover}`}
 
                     style={{
-                        backgroundImage: (
-                            user.profileImageURL
-                                ? `url(${user.profileImageURL})`
-                                : `url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQYm-KcyvHy3PDkmh0V9KzkUk26255h0RwthshiaoanTnfH2B_IRg')`
-                        )
+                        backgroundImage: `url(${user.profileImageURL})`
                     }}
 
                     onClick={!urlUserID ? (() => refs.click()) : (() => true)}
@@ -149,6 +151,14 @@ const UserHeader = () => {
                         </Fab>
                     </Tooltip>
                 )
+            }
+
+            {
+                urlUserID &&
+                (currentUserData.role === 'Reclutador') &&
+                <div className={styles.favoriteUser}>
+                    <TiHeartOutline />
+                </div>
             }
         </div>
     );

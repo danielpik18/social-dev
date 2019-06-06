@@ -1,23 +1,16 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import Register from '../Register/Register';
+import { Redirect } from 'react-router-dom';
 
 import { AuthContext } from './../../Contexts/AuthContext';
 
-import { fire } from './../../firebase';
-
 const Home = () => {
+    const { currentUser } = useContext(AuthContext);
+
     return (
-        <AuthContext.Consumer>
-            {context => (
-                context.currentUser ?
-                    <div>
-                        {
-                            context.currentUser.uid
-                        }
-                    </div>
-                    : <Register />
-            )}
-        </AuthContext.Consumer>
+        currentUser ?
+            <Redirect to='/profile' />
+            : <Register />
     );
 }
 

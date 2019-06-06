@@ -3,8 +3,7 @@ import {
     AppBar,
     Tabs,
     Tab,
-    Tooltip,
-    Slide
+    Tooltip
 } from '@material-ui/core';
 import * as Ionicons from 'react-icons/io';
 
@@ -17,11 +16,12 @@ import { ProfileContext } from '../ProfileContext';
 import { ExperienciaProvider } from './Experiencia/ExperienciaContext';
 import { EstudiosProvider } from './Estudios/EstudiosContext';
 import TechPicker from '../../TechPicker/TechPicker';
+import SavedDevs from './SavedDevs/SavedDevs';
 
 const InfoTabs = () => {
     const [tabValue, setTabValue] = useState(0);
 
-    const { user } = useContext(ProfileContext);
+    const { user, urlUserID } = useContext(ProfileContext);
 
     const changeTab = (value) => setTabValue(value);
 
@@ -40,11 +40,20 @@ const InfoTabs = () => {
                     </EstudiosProvider>
                 )
             case 2: return <TechPicker />
+            default:
+                break;
         }
     };
 
     const renderRecruiterTab = () => {
-        //console.log('');
+        switch (tabValue) {
+            case 0:
+                return (
+                    <SavedDevs />
+                )
+            default:
+                break;
+        }
     }
 
     const menuTabs = [
@@ -62,6 +71,11 @@ const InfoTabs = () => {
             display: user.role === 'Desarrollador',
             title: 'Lenguajes y tecnologías',
             icon: 'IoIosConstruct'
+        },
+        {
+            display: (!urlUserID && (user.role === 'Reclutador')),
+            title: 'Desarrolladores guardados',
+            icon: 'IoIosConstruct'
         }
     ];
 
@@ -71,7 +85,7 @@ const InfoTabs = () => {
                 position="static"
                 style={{
                     backgroundColor: user.role === 'Desarrollador'
-                        ? cssColors.blue : cssColors.grey
+                        ? cssColors.blueDark : cssColors.purpleDark
                 }}
             >
                 <Tabs
@@ -97,14 +111,17 @@ const InfoTabs = () => {
                                     </Tooltip>
                                 );
                             }
+                            else {
+                                return null;
+                            }
                         })
                     }
                 </Tabs>
             </AppBar>
 
             {
-                user.role === 'Desarrollador' ?
-                    renderDevTab() : renderRecruiterTab()
+                user.role === 'Desarrollador'
+                    ? renderDevTab() : renderRecruiterTab()
             }
         </div>
     );

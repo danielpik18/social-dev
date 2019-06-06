@@ -1,4 +1,4 @@
-import React, { Component, useState } from 'react';
+import React, { useState } from 'react';
 import styles from './Register.module.scss';
 import {
     Typography,
@@ -11,8 +11,6 @@ import {
 } from '@material-ui/core';
 import { IoMdMail, IoIosLock, IoIosPerson, IoMdCreate } from 'react-icons/io';
 import { TiEdit } from 'react-icons/ti';
-
-import * as EmailValidator from 'email-validator';
 
 import { reBase } from './../../firebase';
 
@@ -33,42 +31,37 @@ const Register = () => {
 
     const submitUser = () => {
         if (name && lastname && email && password && role) {
-            if (EmailValidator.validate(email)) {
-                firebase.auth()
-                    .createUserWithEmailAndPassword(
-                        email, password
-                    )
-                    .then(user => {
-                        reBase.post(`users/${user.user.uid}`, {
-                            data: {
-                                name,
-                                lastname,
-                                email,
-                                password,
-                                role
-                            }
-                        }).catch(error => {
-                            setErrorDialog({
-                                open: true,
-                                message: error.message
-                            });
-                        });
 
-                        alert('User added correctly');
-                    })
-                    .catch(error => {
+            firebase.auth()
+                .createUserWithEmailAndPassword(
+                    email, password
+                )
+                .then(user => {
+                    reBase.post(`users/${user.user.uid}`, {
+                        data: {
+                            name,
+                            lastname,
+                            email,
+                            password,
+                            role,
+                            joinedOn: (new Date()).getTime(),
+                            profileImageURL: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQYm-KcyvHy3PDkmh0V9KzkUk26255h0RwthshiaoanTnfH2B_IRg'
+                        }
+                    }).catch(error => {
                         setErrorDialog({
                             open: true,
                             message: error.message
                         });
                     });
-            }
-            else {
-                setErrorDialog({
-                    open: true,
-                    message: 'El correo electrónico no es valido.'
+
+                    alert('User added correctly');
+                })
+                .catch(error => {
+                    setErrorDialog({
+                        open: true,
+                        message: error.message
+                    });
                 });
-            }
         }
         else {
             setErrorDialog({
@@ -96,7 +89,7 @@ const Register = () => {
         {
             name: 'email',
             label: 'Ingresa tu correo electrónico',
-            type: 'password',
+            type: 'email',
             change: event => setEmail(event.currentTarget.value),
             icon: <IoMdMail className={styles.inputBlockIcon} />
         },
@@ -151,6 +144,7 @@ const Register = () => {
                                                 fullWidth
                                                 label={block.label}
                                                 onChange={block.change}
+                                                type={block.type}
                                             />
                                         </div>
                                     ))

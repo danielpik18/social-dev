@@ -122,7 +122,7 @@ const Estudios = () => {
                     !user.degrees &&
                     <div className={styles.noEstudioView}>
                         <Typography variant='caption'>
-                            Aún no has agredado títulos académicos.
+                            No se han agredado títulos académicos.
                     </Typography>
                     </div>
                 }

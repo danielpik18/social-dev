@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useEffect } from 'react';
 import StarRatings from 'react-star-ratings';
 import cssColors from './../../../../scss/_colors.scss';
 import { Typography } from '@material-ui/core';

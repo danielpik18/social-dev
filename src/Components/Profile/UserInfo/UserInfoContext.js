@@ -10,7 +10,8 @@ const UserInfoProvider = (props) => {
     const { user, urlUserID } = useContext(ProfileContext);
 
     useEffect(() => {
-        (user && !urlUserID) && setInfoEditable(true);
+        /* eslint-disable */
+        if (user && !urlUserID) setInfoEditable(true);
     }, []);
 
     return (

@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 
 import Home from './Components/Home/Home';
@@ -9,15 +9,16 @@ import SearchView from './Components/SearchView/SearchView';
 
 import { AuthProvider } from './Contexts/AuthContext';
 import PrivateRoute from './hoc/PrivateRoute';
-import { SearchFiltersProvider } from './Components/Navigation/SearchBar/SearchFilters/SearchFiltersContext';
+import { ProfileProvider } from './Components/Profile/ProfileContext';
 import { SearchViewProvider } from './Components/SearchView/SearchViewContext';
+import { SearchFiltersProvider } from './Components/Navigation/SearchBar/SearchFilters/SearchFiltersContext';
 
 const App = () => {
   return (
-    <AuthProvider>
-      <SearchFiltersProvider>
-        <SearchViewProvider>
-          <Router basename={process.env.PUBLIC_URL}>
+    <Router basename={process.env.PUBLIC_URL}>
+      <AuthProvider>
+        <SearchFiltersProvider>
+          <SearchViewProvider>
             <Layout>
               <Switch>
                 <Route component={Home} exact path='/' />
@@ -26,6 +27,7 @@ const App = () => {
                   exact
                   path='/profile/:id?'
                   component={Profile}
+                  provider={ProfileProvider}
                 />
 
                 <Route path='/login' component={Login} />
@@ -38,10 +40,11 @@ const App = () => {
 
               </Switch>
             </Layout>
-          </Router>
-        </SearchViewProvider>
-      </SearchFiltersProvider>
-    </AuthProvider>
+
+          </SearchViewProvider>
+        </SearchFiltersProvider>
+      </AuthProvider>
+    </Router>
   );
 }
 

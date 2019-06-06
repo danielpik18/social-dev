@@ -8,7 +8,6 @@ import {
     Container,
     Button
 } from '@material-ui/core';
-import * as EmailValidator from 'email-validator';
 
 import { fire } from './../../firebase';
 

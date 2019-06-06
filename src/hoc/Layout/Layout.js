@@ -1,31 +1,30 @@
 import React, { useContext } from 'react';
 import Navigation from '../../Components/Navigation/Navigation';
-import { ProfileProvider } from './../../Components/Profile/ProfileContext';
 import MessagesFab from './../../Components/MessagesFab/MessagesFab';
 import { AuthContext } from '../../Contexts/AuthContext';
 import { MessagesFabProvider } from '../../Components/MessagesFab/MessagesFabContext';
+import { MessagesPopoverProvider } from '../../Components/MessagesFab/MessagesPopover/MessagesPopoverContext';
+import { ConversationViewProvider } from '../../Components/MessagesFab/MessagesPopover/ConversationView/ConversationViewContext';
 
 const Layout = ({ children }) => {
     const { currentUser } = useContext(AuthContext);
 
     return (
         <div>
-            <Navigation />
-
             <MessagesFabProvider>
-                <ProfileProvider>
-                    {children}
-                </ProfileProvider>
+                <MessagesPopoverProvider>
+                    <ConversationViewProvider>
+                        <Navigation />
 
-                {
-                    currentUser &&
-                    (
-
-                        <MessagesFab />
-
-                    )
-                }
-
+                        {children}
+                        {
+                            currentUser &&
+                            (
+                                <MessagesFab />
+                            )
+                        }
+                    </ConversationViewProvider>
+                </MessagesPopoverProvider>
             </MessagesFabProvider>
         </div>
     );

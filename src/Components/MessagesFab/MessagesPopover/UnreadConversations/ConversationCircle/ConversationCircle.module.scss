@@ -1,0 +1,58 @@
+@import './../../../../../scss/colors';
+
+.circle{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 1rem;
+    cursor: pointer;
+
+    transition: background-color .15s ease-in-out;
+    
+    &:hover{
+        background-color: rgba($greyLight, .45);
+    }
+}
+
+.userImage{
+
+    &Wrapper{
+        width: 2.4rem;
+        height: 2.4rem;
+        position: relative;
+    }
+
+    border-radius: 50%;
+    width: 100%;
+    height: 100%;
+    background-size: 100% 100% !important;
+    background-position: center;
+    background-repeat: no-repeat;
+    box-sizing: border-box;
+}
+
+.userName{
+    font-size: .75rem;
+    color: $greyDark;
+    text-align: center;
+    line-height: .8rem
+}
+
+.unreadMessages{
+    position: absolute;
+    
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    
+    width: 1rem;
+    height: 1rem;
+    padding: .15rem;
+    top: -.25rem;
+    right: -.85rem;
+    
+    border-radius: 50%;
+    background: linear-gradient(to top, $purple, $purpleLight);
+    color: $whiteLight;
+    font-size: .75rem;
+}

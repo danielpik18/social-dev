@@ -1,6 +1,6 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useEffect, useContext } from 'react';
 import styles from './SearchView.module.scss';
-import { Typography, Container, Divider, Slide } from '@material-ui/core';
+import { Container } from '@material-ui/core';
 
 import { reBase } from './../../firebase';
 import SearchResult from './SearchResult/SearchResult';
@@ -17,6 +17,8 @@ const SearchView = (props) => {
     } = useContext(SearchViewContext);
 
     useEffect(() => {
+        console.log('searchview ran');
+
         reBase.fetch('users', {})
             .then(users => {
                 //1. Get users drom DB and transform into an object including the ID
@@ -27,7 +29,10 @@ const SearchView = (props) => {
                 const usersIDs = Object.keys(users);
 
                 usersIDs.forEach((id, i) => {
-                    if (currentUser && currentUser.uid !== id) {
+                    if (
+                        (currentUser && currentUser.uid !== id) &&
+                        (users[id].role !== 'Reclutador')
+                    ) {
                         usersWithID.push({
                             id: usersIDs[i],
                             ...users[id]
@@ -123,7 +128,7 @@ const SearchView = (props) => {
                 //4. Set search results after all calculation
                 setSearchResults(fullyFilteredUsers);
             });
-    }, [props.match]);
+    }, [props.match, currentUser, setSearchResults]);
 
 
     return (
@@ -156,10 +161,8 @@ const SearchView = (props) => {
                                             />
                                         );
 
-                                        if (currentUser) {
-                                            if (currentUser.uid !== user.id) {
-                                                return resultJSX;
-                                            }
+                                        if (currentUser && (currentUser.uid !== user.id)) {
+                                            return resultJSX;
                                         }
                                         else if (searchResults.length === 1) {
                                             return (

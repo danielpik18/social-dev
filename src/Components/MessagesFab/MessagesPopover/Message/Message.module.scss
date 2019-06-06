@@ -4,22 +4,30 @@
     margin: .6rem .4rem;
     border: solid $greyLight 1px;
     border-radius: 6px;
-    cursor: pointer;
-    opacity: .85;
+
+    
+    &Hover{
+        opacity: .85;
+        cursor: pointer;
+        
+        &:hover{
+            opacity: 1;
+            border: solid rgba($whiteLight, 1) 1px;
+        }
+    }
 
     transition: border .05s;
 
     &From{
         display: flex; 
+        justify-content: space-between;
         align-items: center;
         padding-left: .2rem;
-        background-color: $greyLight;
-        padding: .4rem;
+        padding: .2rem .4rem;
 
         &User{
             display: flex;
             align-items: center;
-            color: $greyDark;
             font-size: .8rem;
 
             &Image{
@@ -35,15 +43,17 @@
         }
     }
 
+    &SentTime{
+        font-size: .75rem;
+        //color: $grey;
+    }
+
     &Content{
+        word-break: break-all;
+        max-width: 100%;
         background-color: $whiteLight;
         padding: .6rem;
         font-size: .8rem;
         line-height: 1rem;
-    }
-
-    &:hover{
-        opacity: 1;
-        border: solid rgba($whiteLight, 1) 1px;
     }
 }

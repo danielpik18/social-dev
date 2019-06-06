@@ -25,11 +25,7 @@ const SearchResult = ({ user, slideTimeout }) => {
                         <div
                             className={styles.userImage}
                             style={{
-                                backgroundImage: (
-                                    user.profileImageURL
-                                        ? `url(${user.profileImageURL})`
-                                        : `url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQYm-KcyvHy3PDkmh0V9KzkUk26255h0RwthshiaoanTnfH2B_IRg')`
-                                )
+                                backgroundImage: `url(${user.profileImageURL})`
                             }}
                         >
                         </div>
@@ -72,10 +68,10 @@ const SearchResult = ({ user, slideTimeout }) => {
 
                         <div className={styles.rightSideInfo}>
                             <small className={styles.rightSideSubtitle}>
-                                ¿Actualmente trabajando?
+                                Proyectos publicados:
                     </small>
                             <span className={styles.rightSideValue}>
-                                {user.isWorking ? (user.isWorking === 'no' ? 'No' : 'Si') : '--'}
+                                {user.publishedProjects ? Object.values(user.publishedProjects).length : '--'}
                             </span>
                         </div>
                     </div>

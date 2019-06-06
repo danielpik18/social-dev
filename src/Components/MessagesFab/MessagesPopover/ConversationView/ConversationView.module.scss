@@ -1,10 +1,69 @@
-.wrapper{
-}
+@import './../../../../scss/colors';
+@import './../../../../scss/mixins';
 
 .textfieldWrapper{
-    position: absolute;
-    bottom: 1.4rem;
-    left: 0;
+    position: fixed;
+    bottom: 0;
+    left: 1.8rem;
     width: 90%;
-    margin: 0 .6rem;
+    margin: 0 .4rem;
+    background-color: $whiteLight;
+    border-radius: 6px;
+}
+
+.conversation{
+    &Wrapper{
+        //
+    }
+
+    &Header{
+        display: flex;
+        align-items: center;
+        padding-left: .6rem;
+        background: linear-gradient(to right , $blueLight, $cyanLight);
+
+        &Image{
+            margin-right: .6rem;
+                width: 1.6rem;
+                height: 1.6rem;
+                background-size: 100% 100% !important;
+                background-repeat: no-repeat;
+                border-radius: 50%;
+                background-position: center;
+                background-color: $white;
+        }
+
+        &Name{
+            color: $white;
+            cursor: pointer;
+            text-decoration: none !important;
+
+            &:hover{
+                color: $whiteLight;
+            }
+        }
+    }
+}
+
+.messagesWrapper{
+    height: 20rem;
+    overflow-y: scroll;
+}
+
+.noMessages{
+    padding-top: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: $grey;
+    font-size: .85rem;
+
+    & > *:not(:last-child){
+        margin-right: .6rem;
+    }
+}
+
+.loader{
+    padding-bottom: 4rem;
+    @include centerDivAbsolute;
 }

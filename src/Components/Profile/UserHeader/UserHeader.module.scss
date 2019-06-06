@@ -80,6 +80,15 @@
     }
 }
 
+.favoriteUser{
+    position: absolute;
+    font-size: 2rem;
+    top: 0;
+    right: 1rem;
+    color: $redLight;
+    cursor: pointer;
+}
+
 .loader{
     @include centerDivAbsolute;
 }

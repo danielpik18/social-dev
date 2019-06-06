@@ -20,9 +20,13 @@ import { fire } from './../../../firebase';
 
 import styles from './SideDrawer.module.scss';
 import { AuthContext } from '../../../Contexts/AuthContext';
+import { MessagesFabContext } from '../../MessagesFab/MessagesFabContext';
+import { MessagesPopoverContext } from './../../MessagesFab/MessagesPopover/MessagesPopoverContext';
 
 const SideDrawer = ({ isOpen, toggle }) => {
     const { currentUser } = useContext(AuthContext);
+    const { setPopoverOpen } = useContext(MessagesFabContext);
+    const { setCurrentView } = useContext(MessagesPopoverContext)
 
     const menuOptions = [
         ...(
@@ -61,8 +65,13 @@ const SideDrawer = ({ isOpen, toggle }) => {
                     {
                         title: 'Log out',
                         icon: <IoIosLogOut />,
-                        path: '/login',
+                        path: '/',
                         clicked: () => {
+                            //RESET ALL APP STATE ON LOG OUT ! ! !
+
+                            setPopoverOpen(false);
+                            setCurrentView('conversationsList');
+
                             fire.auth().signOut();
                             toggle();
                         }

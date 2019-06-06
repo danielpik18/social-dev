@@ -32,7 +32,9 @@ const ConfirmLinkModal = ({ isOpen, toggle, linkTitle }) => {
     });
 
     useEffect(() => {
-        if (user.socialMediaLink) {
+        /* eslint-disable */
+
+        if (user.socialMediaLinks) {
             setLink(user.socialMediaLinks[linkTitle]);
         }
     }, []);

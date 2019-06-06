@@ -1,6 +1,4 @@
-import React, { useState, useEffect, useContext } from 'react';
-import { reBase } from './../../firebase';
-import { getAllObjectChildrenValues } from '../../utils/misc';
+import React, { useState, useContext } from 'react';
 import { SearchFiltersContext } from '../Navigation/SearchBar/SearchFilters/SearchFiltersContext';
 
 const SearchViewContext = React.createContext();
