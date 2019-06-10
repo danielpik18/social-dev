@@ -1,14 +1,9 @@
-@import './../../../../scss/colors';
+@import './../../../scss/colors';
 
-.enterLinkModal{
+.enterLinkDialog{
     padding: 2rem;
     background: linear-gradient(to top, $whiteDark, $white);
-
-    &Title{
-        text-transform: uppercase;
-        color: $greyDark;
-        margin-bottom: 2rem !important;
-    }
+    width: 30rem;
 
     &Confirm{
         background-color: $green !important;

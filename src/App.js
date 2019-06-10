@@ -34,7 +34,7 @@ const App = () => {
 
                 <Route
                   exact
-                  path='/search/:techTags?/:yearsOfExperience?'
+                  path='/search/:minRating?/:yearsOfExperience?/:techTags?'
                   component={SearchView}
                 />
 

@@ -17,6 +17,10 @@
         display: flex;
         margin-bottom: 2rem;
         position: relative;
+
+        &:hover > .removeExpButton{
+            opacity: 1;
+        }
     }
 
     &Image{
@@ -49,6 +53,8 @@
     font-size: 1.4rem;
     color: $red;
     cursor: pointer;
+    opacity: 0;
+    transition: opacity .08s ease-in-out;
 
     &:hover{
         color: $redLight;

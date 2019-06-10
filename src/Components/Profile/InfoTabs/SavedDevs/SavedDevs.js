@@ -2,22 +2,18 @@ import React, { useContext } from 'react';
 import styles from './SavedDevs.module.scss';
 import { AuthContext } from './../../../../Contexts/AuthContext';
 import SearchResult from './../../../SearchView/SearchResult/SearchResult';
+import { getArrayfromObjectWithKeysAsID } from './../../../../utils/misc';
 
 const SavedDevs = () => {
     const { currentUserData } = useContext(AuthContext);
-    const savedDevsWithID = [];
+    let savedDevsWithID = [];
 
-    if (currentUserData) {
-        if (currentUserData.favoriteDevs && (Object.values(currentUserData.favoriteDevs).length > 0)) {
-            const favoriteDevsKeys = Object.keys(currentUserData.favoriteDevs);
-
-            favoriteDevsKeys.forEach(devID => {
-                savedDevsWithID.push({
-                    ...currentUserData.favoriteDevs[devID],
-                    id: devID
-                });
-            });
-        }
+    if (
+        currentUserData &&
+        currentUserData.favoriteDevs &&
+        (Object.values(currentUserData.favoriteDevs).length > 0)
+    ) {
+        savedDevsWithID = getArrayfromObjectWithKeysAsID(currentUserData.favoriteDevs);
     }
 
     console.log(savedDevsWithID);
@@ -30,13 +26,21 @@ const SavedDevs = () => {
 
             <div className={styles.savedDevsList}>
                 {
-                    savedDevsWithID.map((dev, index) => (
-                        <SearchResult
-                            user={dev}
-                            slideTimeout={index * 350}
-                            smallVersion={true}
-                        />
-                    ))
+                    (savedDevsWithID.length > 0) ?
+                        (
+                            savedDevsWithID.map((dev, index) => (
+                                <SearchResult
+                                    key={dev.id}
+                                    user={dev}
+                                    slideTimeout={index * 350}
+                                    smallVersion={true}
+                                />
+                            ))
+                        ) : (
+                            <div className={styles.noSavedDevs}>
+                                No has agregado desarrolladores
+                            </div>
+                        )
                 }
             </div>
         </div>

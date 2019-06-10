@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import {
     IconButton,
     Paper,
@@ -19,38 +19,54 @@ const SearchBar = () => {
         filterDialogOpen,
         setFilterDialogOpen
     } = useContext(SearchBarContext);
-    const { techTags, expYearsMin, expYearsMax } = useContext(SearchFiltersContext);
+    const {
+        techTags,
+        expYearsMin,
+        expYearsMax,
+        minRating,
+        devName,
+        setDevName
+    } = useContext(SearchFiltersContext);
 
-    const techTagsParam = techTags && techTags.join(',');
+    const [searchButtonRef, setSearchButtonRef] = useState(null);
 
+    const minRatingParam = minRating ? minRating : 'null';
+    const techTagsParam = techTags ? techTags.join(',') : 'null';
     const expYearsRange = (
-        (expYearsMin && expYearsMax)
-        && `${expYearsMin}-${expYearsMax}`
+        ((expYearsMin || expYearsMin === 0) || expYearsMax)
+            ? `${expYearsMin ? expYearsMin : 0}-${expYearsMax ? expYearsMax : 50}`
+            : 'null'
     );
 
-    let link = `/search`;
+    const link = `/search/${minRatingParam}/${expYearsRange}/${techTagsParam}`;
 
-    if ((techTags && techTags.length > 0) && expYearsRange) {
-        link = `/search/${techTagsParam}/${expYearsRange}`;
-    }
-    else if ((techTags && techTags.length > 0) && !expYearsRange) {
-        link = `/search/${techTagsParam}`;
-    }
-    else if ((!techTags || techTags.length === 0) && expYearsRange) {
-        link = `/search/null/${expYearsRange}`;
-    }
+    const handleKeyPressed = (event) => {
+        if (event.key === 'Enter') {
+            event.preventDefault();
+            searchButtonRef.click();
+        }
+    };
 
     return (
         <>
             <Paper className={styles.searchBar}>
                 <IconButton onClick={() => setFilterDialogOpen(true)}>
-                    <IoMdOptions />
+                    <IoMdOptions className={styles.searchBarIcon} />
                 </IconButton>
-                <InputBase placeholder="Buscar personas" />
+
+                <InputBase
+                    value={devName}
+                    onChange={e => setDevName(e.currentTarget.value)}
+                    placeholder="Buscar desarrolladores"
+                    onKeyDown={e => handleKeyPressed(e)}
+                    style={{
+                        width: '100%'
+                    }}
+                />
 
                 <Link to={link}>
-                    <IconButton>
-                        <IoIosSearch />
+                    <IconButton ref={ref => setSearchButtonRef(ref)}>
+                        <IoIosSearch className={styles.searchBarIcon} />
                     </IconButton>
                 </Link>
             </Paper >

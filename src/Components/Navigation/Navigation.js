@@ -22,8 +22,8 @@ const Navigation = () => {
 
     return (
         <>
-            <AppBar position='sticky' >
-                <Toolbar className={styles.wrapper}>
+            <AppBar className={styles.wrapper} position='sticky' >
+                <Toolbar className={styles.toolbar}>
                     <Link to='/'>
                         <div className={styles.logo}></div>
                     </Link>

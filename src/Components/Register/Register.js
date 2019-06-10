@@ -54,7 +54,7 @@ const Register = () => {
                         });
                     });
 
-                    alert('User added correctly');
+                    console.log('User registered correctly');
                 })
                 .catch(error => {
                     setErrorDialog({

@@ -12,6 +12,7 @@ import { reBase, storage } from './../../../firebase';
 import { AuthContext } from '../../../Contexts/AuthContext';
 import { MessagesFabContext } from '../../MessagesFab/MessagesFabContext';
 import { ConversationViewContext } from '../../MessagesFab/MessagesPopover/ConversationView/ConversationViewContext';
+import ErrorDialog from '../../Dialogs/ErrorDialog/ErrorDialog';
 
 const UserHeader = () => {
     const { currentUser, currentUserData } = useContext(AuthContext);
@@ -23,9 +24,14 @@ const UserHeader = () => {
     const { setPopoverOpen } = useContext(MessagesFabContext);
     const { setCurrentConversationID } = useContext(ConversationViewContext);
 
-    const [refs, setRefs] = useState(null);
+    const [profileImageInputRef, setProfileImageInputRef] = useState(null);
     const [userImage, setUserImage] = useState(null);
     const [userImageLoading, setUserImageLoading] = useState(false);
+
+    const [errorDialog, setErrorDialog] = useState({
+        open: false,
+        message: ''
+    });
 
     const handleChatWithUser = () => {
         setCurrentConversationID(urlUserID);
@@ -86,11 +92,17 @@ const UserHeader = () => {
                         });
                 }
                 else {
-                    console.log('file too large');
+                    setErrorDialog({
+                        open: true,
+                        message: 'El tamaño de la imagen es muy grande.'
+                    });
                 }
             }
             else {
-                console.log('wrong file type');
+                setErrorDialog({
+                    open: true,
+                    message: 'El tipo de archivo no es valido.'
+                });
             }
         }
     }, [userImage]);
@@ -106,7 +118,7 @@ const UserHeader = () => {
                         backgroundImage: `url(${user.profileImageURL})`
                     }}
 
-                    onClick={!urlUserID ? (() => refs.click()) : (() => true)}
+                    onClick={!urlUserID ? (() => profileImageInputRef.click()) : (() => true)}
                 >
                     {
                         !urlUserID && (
@@ -123,14 +135,13 @@ const UserHeader = () => {
                                 <input id="myInput"
                                     type="file"
                                     style={{ display: 'none' }}
-                                    ref={(ref) => setRefs(ref)}
+                                    ref={(ref) => setProfileImageInputRef(ref)}
                                     onChange={(e) => handleImageUpload(e)}
                                     accept="image/png, image/jpeg, image/gif"
                                 />
                             </>
                         )
                     }
-
                 </div>
             }
 
@@ -191,8 +202,24 @@ const UserHeader = () => {
                             </Tooltip>
                         )
                 )
-
             }
+
+            {
+                //************** */
+                //Dialogs
+            }
+
+            <ErrorDialog
+                isOpen={errorDialog.open}
+                close={() => {
+                    setErrorDialog({
+                        ...errorDialog,
+                        open: false
+                    })
+                }}
+                message={errorDialog.message}
+                title='Ha ocurrido un error al actualizar la imagen:'
+            />
         </div>
     );
 }

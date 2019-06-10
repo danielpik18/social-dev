@@ -47,19 +47,15 @@ const UserRatings = () => {
         const userBeingRatedUserID = urlUserID;
 
         if (userDoingRatingID) {
-
             reBase.post(`users/${userBeingRatedUserID}/ratings/${userDoingRatingID}`, {
                 data: newRating,
                 then: (error) => {
                     if (error) alert(error)
                     else {
-                        alert('rateds')
+                        console.log('rated successfully');
                     }
                 }
             });
-        }
-        else {
-            alert('sign in to rate an user');
         }
     };
 

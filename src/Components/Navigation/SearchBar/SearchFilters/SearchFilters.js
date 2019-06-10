@@ -9,6 +9,7 @@ import {
 import styles from './SearchFilters.module.scss';
 import Experiencia from './Experiencia/Experiencia';
 import FilterTechTags from './FilterTechTags/FilterTechTags';
+import Rating from './Rating/Rating';
 
 const SearchFilters = () => {
     const [selectedFilter, setSelectedFilter] = useState(0);
@@ -28,14 +29,16 @@ const SearchFilters = () => {
                     value={selectedFilter}
                     onChange={(e, index) => setSelectedFilter(index)}
                 >
+                    <Tab label='Puntaje' />
                     <Tab label='Experiencia' />
                     <Tab label='Tecnologías' />
                 </Tabs>
             </AppBar>
 
             <div className={styles.filterTabWrapper}>
-                {selectedFilter === 0 && <Experiencia />}
-                {selectedFilter === 1 && <FilterTechTags />}
+                {selectedFilter === 0 && <Rating />}
+                {selectedFilter === 1 && <Experiencia />}
+                {selectedFilter === 2 && <FilterTechTags />}
             </div>
         </div>
     );

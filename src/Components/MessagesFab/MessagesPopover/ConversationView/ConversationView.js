@@ -158,7 +158,10 @@ const ConversationView = () => {
                             onKeyDown={e => handleKeyPressed(e)}
 
                             inputProps={{
-                                style: { fontSize: '14px', padding: '.25rem' }
+                                style: {
+                                    fontSize: '14px',
+                                    padding: '.25rem'
+                                }
                             }}
                         />
                     </div>

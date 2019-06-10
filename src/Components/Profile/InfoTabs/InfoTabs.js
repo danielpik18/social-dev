@@ -17,6 +17,7 @@ import { ExperienciaProvider } from './Experiencia/ExperienciaContext';
 import { EstudiosProvider } from './Estudios/EstudiosContext';
 import TechPicker from '../../TechPicker/TechPicker';
 import SavedDevs from './SavedDevs/SavedDevs';
+import Projects from './Projects/Projects';
 
 const InfoTabs = () => {
     const [tabValue, setTabValue] = useState(0);
@@ -29,17 +30,21 @@ const InfoTabs = () => {
         switch (tabValue) {
             case 0:
                 return (
+                    <Projects />
+                )
+            case 1:
+                return (
                     <ExperienciaProvider>
                         <Experiencia />
                     </ExperienciaProvider>
                 )
-            case 1:
+            case 2:
                 return (
                     <EstudiosProvider>
                         <Estudios />
                     </EstudiosProvider>
                 )
-            case 2: return <TechPicker />
+            case 3: return <TechPicker />
             default:
                 break;
         }
@@ -49,7 +54,7 @@ const InfoTabs = () => {
         switch (tabValue) {
             case 0:
                 return (
-                    <SavedDevs />
+                    !urlUserID && <SavedDevs />
                 )
             default:
                 break;
@@ -57,6 +62,11 @@ const InfoTabs = () => {
     }
 
     const menuTabs = [
+        {
+            display: user.role === 'Desarrollador',
+            title: 'Proyectos realizados',
+            icon: 'IoIosAlbums',
+        },
         {
             display: user.role === 'Desarrollador',
             title: 'Experiencia laboral',

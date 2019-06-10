@@ -1,7 +1,13 @@
 @import './../../scss/colors';
 
 .button{
-    background: linear-gradient(to right, $greyLight, $whiteDark) !important;
+    background: linear-gradient(to right, $greyLight, $white) !important;
+    border-bottom: 1px solid $greyLight !important;
+    border-right: 1px solid $greyLight !important;
+
+    &:hover{
+        opacity: .85;
+    }
 }
 
 .addIcon{

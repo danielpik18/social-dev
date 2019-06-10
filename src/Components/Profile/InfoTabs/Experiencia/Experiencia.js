@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import AddItemButton from './../../../AddItemButton/AddItemButton';
 import { Typography, Fade } from '@material-ui/core';
 import AddExpDialog from './AddExpDialog/AddExpDialog';
@@ -15,25 +15,32 @@ import { reBase } from './../../../../firebase';
 import { AuthContext } from '../../../../Contexts/AuthContext';
 
 const Experiencia = () => {
-    const [removeExpButtonID, setRemoveExpButtonID] = useState('');
-    const [showRemoveExpButton, setShowRemoveExpButton] = useState(false);
-    const [showRemoveExpDialog, setShowRemoveExpDialog] = useState(false)
-
     const { user, urlUserID } = useContext(ProfileContext);
-    const { setAddExpDialogOpen, calculateTotalExperienceYears } = useContext(ExperienciaContext);
     const { currentUser } = useContext(AuthContext);
+    const { setAddExpDialogOpen, calculateTotalExperienceYears } = useContext(ExperienciaContext);
+
+    const [showRemoveExpDialog, setShowRemoveExpDialog] = useState(false);
+    const [expToBeDeleted, setExpToBeDeleted] = useState(null);
 
     const experienceIDs = user.experience ? Object.keys(user.experience) : [];
     const experience = user.experience ? Object.values(user.experience) : [];
 
     const handleDeleteExp = () => {
-        reBase.remove(`users/${currentUser.uid}/experience/${removeExpButtonID}`
+        reBase.remove(`users/${currentUser.uid}/experience/${expToBeDeleted}`
             , error => console.log(error));
-
 
         calculateTotalExperienceYears();
         setShowRemoveExpDialog(false);
     };
+
+    useEffect(() => {
+        if (expToBeDeleted) {
+            setShowRemoveExpDialog(true);
+        }
+        else {
+            setShowRemoveExpDialog(false);
+        }
+    }, [expToBeDeleted]);
 
     return (
         <Fade in timeout={325}>
@@ -60,11 +67,6 @@ const Experiencia = () => {
                             <div
                                 key={index}
                                 className={styles.expWrapper}
-                                onMouseEnter={() => {
-                                    setRemoveExpButtonID(expID);
-                                    setShowRemoveExpButton(true);
-                                }}
-                                onMouseLeave={() => setShowRemoveExpButton(false)}
                             >
                                 <div
                                     className={styles.expImage}
@@ -103,16 +105,15 @@ const Experiencia = () => {
                                     </div>
                                 </div>
 
+
                                 {
-                                    (showRemoveExpButton && (removeExpButtonID === expID)) &&
-                                    <Fade in>
-                                        <div
-                                            className={styles.removeExpButton}
-                                            onClick={() => setShowRemoveExpDialog(true)}
-                                        >
-                                            <IoIosCloseCircleOutline />
-                                        </div>
-                                    </Fade>
+                                    !urlUserID &&
+                                    <div
+                                        className={styles.removeExpButton}
+                                        onClick={() => setExpToBeDeleted(expID)}
+                                    >
+                                        <IoIosCloseCircleOutline />
+                                    </div>
                                 }
                             </div>
                         );
@@ -124,7 +125,7 @@ const Experiencia = () => {
                     <div className={styles.noExpView}>
                         <Typography variant='caption'>
                             No se han agregado experiencias previas.
-                    </Typography>
+                        </Typography>
                     </div>
                 }
 
@@ -149,7 +150,7 @@ const Experiencia = () => {
 
                 <ConfirmDeleteDialog
                     isOpen={showRemoveExpDialog}
-                    close={() => setShowRemoveExpDialog(false)}
+                    close={() => setExpToBeDeleted(null)}
                     confirm={() => handleDeleteExp()}
                     title='Confirmar eliminación.'
                     message='¿Estas seguro de querer borrar este artículo?'

@@ -1,8 +1,7 @@
-import React, { useState, useContext, useEffect } from 'react';
-
+import React, { useState } from 'react';
+import validUrl from 'valid-url';
 import {
     Dialog,
-    Typography,
     TextField,
     InputAdornment
 } from '@material-ui/core';
@@ -12,50 +11,34 @@ import {
     IoMdCheckmark
 } from 'react-icons/io';
 
-import { AuthContext } from './../../../../Contexts/AuthContext';
-import { reBase } from './../../../../firebase';
+import styles from './ConfirmLinkDialog.module.scss';
 
-import styles from './ConfirmLinkModal.module.scss';
-import { ProfileContext } from '../../ProfileContext';
 
-import validUrl from 'valid-url';
-import ErrorDialog from '../../../Dialogs/ErrorDialog/ErrorDialog';
+import ErrorDialog from '../ErrorDialog/ErrorDialog';
 
-const ConfirmLinkModal = ({ isOpen, toggle, linkTitle }) => {
-    const [link, setLink] = useState('');
-    const { currentUser } = useContext(AuthContext);
-    const { user } = useContext(ProfileContext);
+const ConfirmLinkDialog = ({
+    isOpen,
+    toggle,
+    placeholder,
+    confirm }) => {
 
     const [errorDialog, setErrorDialog] = useState({
         open: false,
         message: ''
     });
+    const [link, setLink] = useState('');
 
-    useEffect(() => {
-        /* eslint-disable */
-
-        if (user.socialMediaLinks) {
-            setLink(user.socialMediaLinks[linkTitle]);
-        }
-    }, []);
-
-    const confirmLink = () => {
+    const handleConfirm = () => {
         if (validUrl.isUri(link) || !link) {
-            reBase.post(
-                `users/${currentUser.uid}/socialMediaLinks/${linkTitle}`,
-                {
-                    data: link
-                }).catch(err => alert(err));
-
-            toggle(false);
+            confirm(link);
         }
         else {
             setErrorDialog({
                 open: true,
                 message: 'Ingresa in enlace URL valido.'
-            })
+            });
         }
-    };
+    }
 
     return (
         <Dialog
@@ -63,17 +46,10 @@ const ConfirmLinkModal = ({ isOpen, toggle, linkTitle }) => {
             open={isOpen}
             style={{ color: 'white' }}
         >
-            <div className={styles.enterLinkModal}>
-                <Typography
-                    variant='h6'
-                    className={styles.enterLinkModalTitle}
-                >
-                    Ingresa el enlace a tu perfíl de {linkTitle}
-                </Typography>
-
+            <div className={styles.enterLinkDialog}>
                 <div className={styles.linkInputBlock}>
                     <TextField
-                        placeholder='https://www.ejemplo.com/usuario'
+                        placeholder={placeholder}
                         variant='outlined'
                         fullWidth
                         value={link}
@@ -88,8 +64,8 @@ const ConfirmLinkModal = ({ isOpen, toggle, linkTitle }) => {
                     />
 
                     <span
-                        onClick={() => confirmLink()}
-                        className={styles.enterLinkModalConfirm}>
+                        onClick={() => handleConfirm()}
+                        className={styles.enterLinkDialogConfirm}>
                         <IoMdCheckmark />
                     </span>
                 </div>
@@ -110,4 +86,4 @@ const ConfirmLinkModal = ({ isOpen, toggle, linkTitle }) => {
     );
 }
 
-export default ConfirmLinkModal;
+export default ConfirmLinkDialog;

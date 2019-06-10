@@ -80,3 +80,17 @@ export const scrollDivToBottom = (id) => {
     const messagesWrapper = document.getElementById(id);
     messagesWrapper.scrollTop = messagesWrapper.scrollHeight;
 }
+
+export const getArrayfromObjectWithKeysAsID = (object) => {
+    const arrayWithIDs = [];
+    const objectKeys = Object.keys(object);
+
+    objectKeys.forEach(key => {
+        arrayWithIDs.push({
+            id: key,
+            ...object[key]
+        });
+    });
+
+    return arrayWithIDs;
+}

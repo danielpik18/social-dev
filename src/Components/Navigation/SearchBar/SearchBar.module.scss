@@ -1,5 +1,15 @@
+@import './../../../scss/colors';
+
 .searchBar{
     width: 26rem;
+    height: 2rem;
+    padding: .2rem;
     display: flex;
+    align-items: center;
     justify-content: space-between;
+    background-color: $white;
+
+    &Icon{
+        font-size: 1.15rem;
+    }
 }

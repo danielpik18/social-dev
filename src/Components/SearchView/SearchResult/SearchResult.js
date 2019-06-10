@@ -78,7 +78,7 @@ const SearchResult = ({ user, slideTimeout, smallVersion }) => {
                                     Proyectos publicados:
                                 </small>
                                 <span className={styles.rightSideValue}>
-                                    {user.publishedProjects ? Object.values(user.publishedProjects).length : '--'}
+                                    {user.projects ? Object.values(user.projects).length : '--'}
                                 </span>
                             </div>
                         </div>

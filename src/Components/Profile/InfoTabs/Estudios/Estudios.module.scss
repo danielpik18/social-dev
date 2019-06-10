@@ -17,6 +17,10 @@
         display: flex;
         margin-bottom: 2rem;
         position: relative;
+
+        &:hover .removeEstudioButton{
+            opacity: 1;
+        }
     }
 
     &Image{
@@ -46,9 +50,13 @@
     top: 50%;
     transform: translate(0%, -50%);
 
+    opacity: 0;
+    transition: opacity .08s ease-in-out;
+    
     font-size: 1.4rem;
     color: $red;
     cursor: pointer;
+    
 
     &:hover{
         color: $redLight;

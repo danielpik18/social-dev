@@ -1,0 +1,130 @@
+@import './../../../../scss/colors';
+@import './../../../../scss/mixins';
+@import './../../../../scss/fonts';
+
+.projects{
+    &Wrapper{
+        background-color: $white;
+        padding: 1.2em;
+    }
+
+    &Title{
+        color: $greyDark;
+        text-transform: uppercase;
+        font-size: 1.2rem;
+        margin-bottom: 1rem;
+    }
+
+    &List{
+        max-height: 40rem;
+        overflow: auto;
+        margin-bottom: 2rem;
+    }
+}
+
+.projectItem{
+    background-color: $whiteLight;
+    display: flex;
+    border-left: 1px solid $greyLight;
+    border-top: 1px solid $greyLight;
+    position: relative;
+    overflow: hidden;
+
+    &:hover > &SlidingInfo{
+        right: 0%;
+    }
+
+    &:not(:last-child){
+        margin-bottom: 4rem;
+    }
+
+    &Image{
+        position: relative;
+        min-width: 11rem;
+        height: 11rem;
+        background-size: cover;
+        background-position: center;
+
+        &Hover{
+            transition: opacity .1s ease-in-out;
+            cursor: pointer;
+
+            &:hover{
+                opacity: .85;
+            }
+        }
+    }
+
+    &Info{
+        width: 100%;
+        padding: .2rem 2rem;
+
+        & > *:hover{
+            opacity: .85 !important;
+        }
+
+        &Title{
+            color: $greyDark;
+            font-size: 1.6rem;
+        }
+
+        &Description{
+            color: $grey;
+            font-size: .8rem;
+        }
+    }
+
+    &SlidingInfo{
+        width: 6rem;
+        height: 100%;
+        background: linear-gradient(to top , rgba($greyLight, .55), rgba($white, .55));
+        position: absolute;
+        border-left: 1px solid $grey;
+        right: -100%;
+
+        transition: right 1s ease-in-out;
+
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+
+        &Icon{
+            font-size: 2rem;
+            color: $grey;
+            cursor: pointer;
+
+            &:hover{
+                opacity: .8;
+            }
+        }
+    }
+}
+
+.noProjects{
+    color: $grey;
+    font-size: .85rem;
+    text-align: center;
+    padding: 3rem 0;
+}
+
+.editProjectText{
+    &Field{
+        padding: .62rem 0 !important;
+        font-size: 1.6rem !important;
+        color: $blue !important;
+        font-family: 'Mandali', sans-serif !important;
+    }
+
+    &Area{
+        font-family: 'Mandali', sans-serif !important;
+        color: $blackLight !important;
+        font-size: .8rem !important;
+        line-height: 1.63rem !important;
+        transform: translateY(-.38rem);
+    }
+}
+
+.loader{
+    @include centerDivAbsolute;
+}

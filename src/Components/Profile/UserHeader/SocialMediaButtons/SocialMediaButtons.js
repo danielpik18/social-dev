@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import {
     Tooltip
 } from '@material-ui/core';
@@ -9,18 +9,32 @@ import {
 } from 'react-icons/io';
 
 import styles from './SocialMediaButtons.module.scss';
-import ConfirmLinkModal from '../ConfirmLinkModal/ConfirmLinkModal';
 import { ProfileContext } from '../../ProfileContext';
+import ConfirmLinkDialog from '../../../Dialogs/ConfirmLinkDialog/ConfirmLinkDialog';
+import { reBase } from '../../../../firebase';
+import { AuthContext } from '../../../../Contexts/AuthContext';
 
 const SocialMediaButtons = () => {
-    const [confirmModalOpen, toggleConfirmModal] = useState(false);
-    const [clickedLinkTitle, setClickedLinkTitle] = useState('');
     const { user, urlUserID } = useContext(ProfileContext);
+    const { currentUser } = useContext(AuthContext);
+
+    const [confirmDialogOpen, setConfirmDialogOpen] = useState(false);
+    const [clickedLinkTitle, setClickedLinkTitle] = useState('');
 
     const handleClick = (linkTitle) => {
         setClickedLinkTitle(linkTitle);
-        toggleConfirmModal(!confirmModalOpen);
+        setConfirmDialogOpen(!confirmDialogOpen);
     }
+
+    const confirmLink = (link) => {
+        reBase.post(
+            `users/${currentUser.uid}/socialMediaLinks/${clickedLinkTitle}`,
+            {
+                data: link
+            }).catch(err => alert(err));
+
+        setConfirmDialogOpen(false);
+    };
 
     const links = [
         {
@@ -60,7 +74,7 @@ const SocialMediaButtons = () => {
 
             {
                 links.map(link => (
-                    link.display &&
+                    (link.display && (link.userHasLink || !urlUserID)) &&
                     <Tooltip
                         key={link.linkTagName}
                         title={link.displayTitle}
@@ -81,11 +95,12 @@ const SocialMediaButtons = () => {
             }
 
             {
-                confirmModalOpen &&
-                <ConfirmLinkModal
-                    isOpen={confirmModalOpen}
-                    toggle={toggleConfirmModal}
-                    linkTitle={clickedLinkTitle}
+                confirmDialogOpen &&
+                <ConfirmLinkDialog
+                    isOpen={confirmDialogOpen}
+                    placeholder={`Ingresa el enlace a tu perfil de ${clickedLinkTitle}`}
+                    toggle={setConfirmDialogOpen}
+                    confirm={confirmLink}
                 />
             }
         </div>

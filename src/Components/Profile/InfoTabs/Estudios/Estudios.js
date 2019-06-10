@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import AddItemButton from '../../../AddItemButton/AddItemButton';
 import { Typography, Fade } from '@material-ui/core';
 import AddEstudioDialog from './AddEstudioDialog/AddEstudioDialog';
@@ -16,8 +16,7 @@ import { reBase } from '../../../../firebase';
 import { AuthContext } from '../../../../Contexts/AuthContext';
 
 const Estudios = () => {
-    const [removeEstudioButtonID, setRemoveEstudioButtonID] = useState('');
-    const [showRemoveEstudioButton, setShowRemoveEstudioButton] = useState(false);
+    const [estudioToBeDeleted, setEstudioToBeDeleted] = useState(null);
     const [showRemoveEstudioDialog, setShowRemoveEstudioDialog] = useState(false)
 
     const { user, urlUserID } = useContext(ProfileContext);
@@ -27,8 +26,19 @@ const Estudios = () => {
     const estudiosIDs = user.degrees ? Object.keys(user.degrees) : [];
     const degrees = user.degrees ? Object.values(user.degrees) : [];
 
+
+    useEffect(() => {
+        if (estudioToBeDeleted) {
+            setShowRemoveEstudioDialog(true);
+        }
+        else {
+            setShowRemoveEstudioDialog(false);
+        }
+    }, [estudioToBeDeleted])
+
+
     const handleDeleteEstudio = () => {
-        reBase.remove(`users/${currentUser.uid}/degrees/${removeEstudioButtonID}`
+        reBase.remove(`users/${currentUser.uid}/degrees/${estudioToBeDeleted}`
             , error => console.log(error));
 
         setShowRemoveEstudioDialog(false);
@@ -55,11 +65,6 @@ const Estudios = () => {
                             <div
                                 key={index}
                                 className={styles.estudioWrapper}
-                                onMouseEnter={() => {
-                                    setRemoveEstudioButtonID(estudioID);
-                                    setShowRemoveEstudioButton(true);
-                                }}
-                                onMouseLeave={() => setShowRemoveEstudioButton(false)}
                             >
                                 <div
                                     className={styles.estudioImage}
@@ -103,16 +108,15 @@ const Estudios = () => {
                                 </div>
 
                                 {
-                                    (showRemoveEstudioButton && (removeEstudioButtonID === estudioID)) &&
-                                    <Fade in>
-                                        <div
-                                            className={styles.removeEstudioButton}
-                                            onClick={() => setShowRemoveEstudioDialog(true)}
-                                        >
-                                            <IoIosCloseCircleOutline />
-                                        </div>
-                                    </Fade>
+                                    !urlUserID &&
+                                    <div
+                                        className={styles.removeEstudioButton}
+                                        onClick={() => setEstudioToBeDeleted(estudioID)}
+                                    >
+                                        <IoIosCloseCircleOutline />
+                                    </div>
                                 }
+
                             </div>
                         );
                     })
@@ -148,7 +152,7 @@ const Estudios = () => {
 
                 <ConfirmDeleteDialog
                     isOpen={showRemoveEstudioDialog}
-                    close={() => setShowRemoveEstudioDialog(false)}
+                    close={() => setEstudioToBeDeleted(null)}
                     confirm={() => handleDeleteEstudio()}
                     title='Confirmar eliminación.'
                     message='¿Estas seguro de querer borrar este artículo?'

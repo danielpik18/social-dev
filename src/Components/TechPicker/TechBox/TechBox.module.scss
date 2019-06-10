@@ -2,7 +2,7 @@
 
 .techCategory{
     &Wrapper{
-        background-color: $white;
+        background-color: rgba($whiteLight, .75);
         text-align: center;
         margin: 1rem;
     }
