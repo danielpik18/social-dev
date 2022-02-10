@@ -8,7 +8,7 @@
     "@react-firebase/auth": "^0.2.9",
     "firebase": "^6.0.4",
     "gh-pages": "^2.0.1",
-    "node-sass": "^4.12.0",
+    "node-sass": "^7.0.0",
     "re-base": "^4.0.0",
     "react": "^16.8.6",
     "react-compound-slider": "^2.0.0",
